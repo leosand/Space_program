@@ -51,14 +51,14 @@ A cutting-edge web application designed to provide comprehensive analysis and co
 - **Version Control**: Git
 
 ### Containerization & Deployment
-- **Docker**: Conteneurisation complète de l'application
-  - Image de base : Node 18 Alpine
-  - Multi-stage build pour optimisation
-  - Support du Hot Reload en développement
-- **Docker Compose**: Orchestration des services
-  - Configuration de développement et production
-  - Gestion des variables d'environnement
-  - Volumes pour la persistance des données
+- **Docker**: Complete application containerization
+  - Base image: Node 18 Alpine
+  - Multi-stage build for optimization
+  - Hot Reload support in development
+- **Docker Compose**: Service orchestration
+  - Development and production configurations
+  - Environment variables management
+  - Data persistence volumes
 - **Ports**:
   - Development: 3000
   - Production: 80
@@ -66,93 +66,93 @@ A cutting-edge web application designed to provide comprehensive analysis and co
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js (v18 or higher) *[Pour installation standard]*
-- npm ou yarn *[Pour installation standard]*
+- Node.js (v18 or higher) *[For standard installation]*
+- npm or yarn *[For standard installation]*
 - Git
-- Docker (optionnel, pour l'installation avec Docker)
+- Docker (optional, for Docker installation)
 
-### Installation Standard
+### Standard Installation
 
-1. Cloner le dépôt :
+1. Clone the repository:
 ```bash
 git clone https://github.com/leosand/Space_program.git
 cd Space_program
 ```
 
-2. Installer les dépendances :
+2. Install dependencies:
 ```bash
 npm install
 ```
 
-3. Configurer les variables d'environnement :
+3. Configure environment variables:
 ```bash
 cp .env.example .env
-# Éditer .env avec vos clés API et configuration
+# Edit .env with your API keys and configuration
 ```
 
-4. Démarrer le serveur de développement :
+4. Start development server:
 ```bash
 npm run dev
 ```
 
-### Installation avec Docker
+### Docker Installation
 
-1. Cloner le dépôt :
+1. Clone the repository:
 ```bash
 git clone https://github.com/leosand/Space_program.git
 cd Space_program
 ```
 
-2. Configurer les variables d'environnement :
+2. Configure environment variables:
 ```bash
 cp .env.example .env
-# Éditer .env avec vos clés API et configuration
+# Edit .env with your API keys and configuration
 ```
 
-3. Construire et démarrer avec Docker Compose :
+3. Build and start with Docker Compose:
 ```bash
 docker-compose up --build
 ```
 
-L'application sera accessible à :
-- Mode développement : http://localhost:3000
-- Mode production : http://localhost:80
+The application will be accessible at:
+- Development mode: http://localhost:3000
+- Production mode: http://localhost:80
 
-Pour arrêter l'application :
+To stop the application:
 ```bash
 docker-compose down
 ```
 
-## 🐳 Utilisation avec Docker
+## 🐳 Using Docker
 
-### Prérequis
-- Docker installé sur votre machine
-- Docker Compose (inclus avec Docker Desktop pour Windows/Mac)
+### Prerequisites
+- Docker installed on your machine
+- Docker Compose (included with Docker Desktop for Windows/Mac)
 
-### Construction et Démarrage
-1. Construire l'image :
+### Building and Starting
+1. Build the image:
 ```bash
 docker build -t space-program .
 ```
 
-2. Démarrer le conteneur :
+2. Start the container:
 ```bash
 docker run -p 3000:3000 space-program
 ```
 
-### Utilisation de Docker Compose
-1. Démarrer l'application :
+### Using Docker Compose
+1. Start the application:
 ```bash
 docker-compose up
 ```
 
-2. Arrêter l'application :
+2. Stop the application:
 ```bash
 docker-compose down
 ```
 
-### Variables d'Environnement avec Docker
-Les variables d'environnement peuvent être configurées dans le fichier `docker-compose.yml` :
+### Environment Variables with Docker
+Environment variables can be configured in the `docker-compose.yml` file:
 ```yaml
 services:
   app:
@@ -161,8 +161,8 @@ services:
       - VITE_API_URL=http://api.example.com
 ```
 
-### Développement avec Docker
-Pour le développement, utilisez le volume pour la mise à jour en temps réel :
+### Development with Docker
+For development, use volume for real-time updates:
 ```bash
 docker-compose -f docker-compose.dev.yml up
 ```
