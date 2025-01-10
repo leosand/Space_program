@@ -50,35 +50,121 @@ A cutting-edge web application designed to provide comprehensive analysis and co
 - **Performance Monitoring**: Lighthouse
 - **Version Control**: Git
 
+### Containerization & Deployment
+- **Docker**: Conteneurisation complète de l'application
+  - Image de base : Node 18 Alpine
+  - Multi-stage build pour optimisation
+  - Support du Hot Reload en développement
+- **Docker Compose**: Orchestration des services
+  - Configuration de développement et production
+  - Gestion des variables d'environnement
+  - Volumes pour la persistance des données
+- **Ports**:
+  - Development: 3000
+  - Production: 80
+
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js (v18 or higher)
-- npm or yarn
+- Node.js (v18 or higher) *[Pour installation standard]*
+- npm ou yarn *[Pour installation standard]*
 - Git
+- Docker (optionnel, pour l'installation avec Docker)
 
-### Installation
+### Installation Standard
 
-1. Clone the repository:
+1. Cloner le dépôt :
 ```bash
 git clone https://github.com/leosand/Space_program.git
 cd Space_program
 ```
 
-2. Install dependencies:
+2. Installer les dépendances :
 ```bash
 npm install
 ```
 
-3. Configure environment variables:
+3. Configurer les variables d'environnement :
 ```bash
 cp .env.example .env
-# Edit .env with your API keys and configuration
+# Éditer .env avec vos clés API et configuration
 ```
 
-4. Start development server:
+4. Démarrer le serveur de développement :
 ```bash
 npm run dev
+```
+
+### Installation avec Docker
+
+1. Cloner le dépôt :
+```bash
+git clone https://github.com/leosand/Space_program.git
+cd Space_program
+```
+
+2. Configurer les variables d'environnement :
+```bash
+cp .env.example .env
+# Éditer .env avec vos clés API et configuration
+```
+
+3. Construire et démarrer avec Docker Compose :
+```bash
+docker-compose up --build
+```
+
+L'application sera accessible à :
+- Mode développement : http://localhost:3000
+- Mode production : http://localhost:80
+
+Pour arrêter l'application :
+```bash
+docker-compose down
+```
+
+## 🐳 Utilisation avec Docker
+
+### Prérequis
+- Docker installé sur votre machine
+- Docker Compose (inclus avec Docker Desktop pour Windows/Mac)
+
+### Construction et Démarrage
+1. Construire l'image :
+```bash
+docker build -t space-program .
+```
+
+2. Démarrer le conteneur :
+```bash
+docker run -p 3000:3000 space-program
+```
+
+### Utilisation de Docker Compose
+1. Démarrer l'application :
+```bash
+docker-compose up
+```
+
+2. Arrêter l'application :
+```bash
+docker-compose down
+```
+
+### Variables d'Environnement avec Docker
+Les variables d'environnement peuvent être configurées dans le fichier `docker-compose.yml` :
+```yaml
+services:
+  app:
+    environment:
+      - NODE_ENV=production
+      - VITE_API_URL=http://api.example.com
+```
+
+### Développement avec Docker
+Pour le développement, utilisez le volume pour la mise à jour en temps réel :
+```bash
+docker-compose -f docker-compose.dev.yml up
 ```
 
 ## 🏗️ Project Structure
