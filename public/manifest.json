@@ -1,0 +1,109 @@
+{
+  "name": "Space Launches Comparison",
+  "short_name": "Space Launches",
+  "description": "Track and compare space launches worldwide",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0ea5e9",
+  "icons": [
+    {
+      "src": "/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "science", "utilities"],
+  "screenshots": [
+    {
+      "src": "/screenshots/launches.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "Launches page showing past and upcoming space launches"
+    },
+    {
+      "src": "/screenshots/statistics.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "Statistics page with launch success rates and trends"
+    },
+    {
+      "src": "/screenshots/compare.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "Compare page for analyzing different launch vehicles"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "View Launches",
+      "short_name": "Launches",
+      "description": "View all space launches",
+      "url": "/launches",
+      "icons": [{ "src": "/icons/launches.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "View Statistics",
+      "short_name": "Stats",
+      "description": "View launch statistics",
+      "url": "/statistics",
+      "icons": [{ "src": "/icons/statistics.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Compare Rockets",
+      "short_name": "Compare",
+      "description": "Compare launch vehicles",
+      "url": "/compare",
+      "icons": [{ "src": "/icons/compare.png", "sizes": "96x96" }]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "orientation": "any"
+} 

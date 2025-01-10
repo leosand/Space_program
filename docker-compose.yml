@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    environment:
+      - VITE_SPACEX_API_URL=https://api.spacexdata.com/v4
+      - VITE_NASA_API_URL=https://api.nasa.gov/planetary
+      - VITE_NASA_API_KEY=DEMO_KEY
+    restart: unless-stopped 
