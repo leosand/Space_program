@@ -212,7 +212,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👥 Team
 
-- **Leone Sand** - *Lead Developer* - [leosand](https://github.com/leosand)
+- **Leonel S** - *Lead Developer* - [leosand](https://github.com/leosand)
 
 ## 🙏 Acknowledgments
 
