@@ -1,5 +1,3 @@
 # Changelog
 
-## [Unreleased]
-
-- feat: version statique finale (Dec 2025) â€” remplace l'ancienne app React
+## [v0.1.0] - 2026-09-01
