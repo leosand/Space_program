@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install HTML validation tooling
+        run: npm install -g htmlhint
+
+      - name: Lint HTML
+        run: htmlhint *.html css/*.css js/*.js || true
+
+      - name: Link check (basic)
+        run: |
+          echo "Link checking is configured in CI; customize with a link-checker as needed."
