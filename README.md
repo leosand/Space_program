@@ -6,7 +6,7 @@
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.x-blue)](https://tailwindcss.com/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-A cutting-edge web application designed to provide comprehensive analysis and comparison of global space launches. This platform aggregates data from various space agencies and private companies, offering detailed insights into launch vehicles, mission success rates, and industry trends.
+A web application designed to provide comprehensive analysis and comparison of global space launches. This platform aggregates data from various space agencies and private companies, offering detailed insights into launch vehicles, mission success rates, and industry trends.
 
 ## ✨ Key Features
 
@@ -212,7 +212,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👥 Team
 
-- **Leone Sand** - *Lead Developer* - [leosand](https://github.com/leosand)
+- **Leonel S** - *Lead Developer* - [leosand](https://github.com/leosand)
 
 ## 🙏 Acknowledgments
 
