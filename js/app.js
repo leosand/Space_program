@@ -1,248 +1,279 @@
 /**
- * SPACE PROGRAM — Security, DOM Helpers & Clean Renderers
- * Zero innerHTML with unescaped remote content. Pure safe DOM manipulation.
+ * SPACE PROGRAM - Main Application Module
+ * Safe DOM rendering, navigation, and UI controllers
  */
 
-// ============================================
-// ESCAPING & SAFE URL HELPERS
-// ============================================
-
-function escapeHTML(str) {
-    if (str === null || str === undefined) return '';
-    return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
+function sanitizeUrl(url) {
+    if (!url || typeof url !== 'string') return null;
+    const trimmed = url.trim();
+    if (!/^https?:\/\//i.test(trimmed)) return null;
+    return trimmed;
 }
 
-function sanitizeUrl(raw) {
-    if (!raw) return null;
-    const trimmed = String(raw).trim();
-    if (/^https?:\/\//i.test(trimmed)) {
-        return escapeHTML(trimmed);
-    }
-    return null;
-}
-
-// ============================================
-// SAFE DOM RENDERERS
-// ============================================
-
-function renderLaunchCardSafe(launch) {
+function renderNewsCardSafe(article) {
     const card = document.createElement('article');
-    card.className = 'card launch-card';
-    card.setAttribute('role', 'article');
-    card.setAttribute('itemscope', '');
-    card.setAttribute('itemtype', 'https://schema.org/Event');
+    card.className = 'card';
+    card.style.display = 'flex';
+    card.style.flexDirection = 'column';
+    card.style.height = '100%';
 
-    const statusClass = launch.status === 'Success' ? 'success' :
-        (launch.status === 'Failure' ? 'failure' : 'upcoming');
-    const launchDate = spaceAPI.formatDateTime(launch.net);
-
-    // Stale archive indicator if fallback
-    if (launch.isFallback) {
-        const staleBanner = document.createElement('div');
-        staleBanner.className = 'stale-banner';
-        staleBanner.textContent = 'Archive telemetry · Live sync unavailable';
-        card.appendChild(staleBanner);
-    }
-
-    // Header
-    const header = document.createElement('div');
-    header.className = 'launch-header';
-
-    const title = document.createElement('h3');
-    title.setAttribute('itemprop', 'name');
-    title.textContent = launch.name || 'Unnamed Mission';
-
-    const badge = document.createElement('span');
-    badge.className = `card-badge ${statusClass}`;
-    badge.textContent = launch.statusName || launch.status || 'TBD';
-
-    header.appendChild(title);
-    header.appendChild(badge);
-    card.appendChild(header);
-
-    // Info rows
-    const info = document.createElement('div');
-    info.className = 'launch-info';
-
-    info.appendChild(createInfoRow('calendar', launchDate, 'startDate', true));
-    info.appendChild(createInfoRow('provider', launch.provider || 'Unknown Provider', 'organizer'));
-    info.appendChild(createInfoRow('rocket', launch.rocket || 'Launch Vehicle'));
-    info.appendChild(createInfoRow('location', launch.location || 'Unknown Location', 'location'));
-
-    card.appendChild(info);
-
-    // Description / mission type
-    const desc = document.createElement('div');
-    desc.className = 'launch-description';
-
-    const typeSpan = document.createElement('span');
-    typeSpan.textContent = `${launch.missionType || 'Orbital'} · ${launch.pad || 'Pad'}`;
-    desc.appendChild(typeSpan);
-
-    card.appendChild(desc);
-    return card;
-}
-
-function createInfoRow(type, text, itemprop, isTime) {
-    const row = document.createElement('div');
-    row.className = 'info-row';
-
-    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    svg.setAttribute('width', '15');
-    svg.setAttribute('height', '15');
-    svg.setAttribute('viewBox', '0 0 24 24');
-    svg.setAttribute('fill', 'none');
-    svg.setAttribute('stroke', 'currentColor');
-    svg.setAttribute('stroke-width', '2');
-    svg.setAttribute('aria-hidden', 'true');
-
-    if (type === 'calendar') {
-        svg.innerHTML = '<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>';
-    } else if (type === 'provider') {
-        svg.innerHTML = '<path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16"/><path d="M1 21h22"/>';
-    } else if (type === 'rocket') {
-        svg.innerHTML = '<path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>';
-    } else {
-        svg.innerHTML = '<circle cx="12" cy="10" r="3"/><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>';
-    }
-
-    row.appendChild(svg);
-
-    const span = document.createElement(isTime ? 'time' : 'span');
-    span.textContent = text;
-    if (itemprop) span.setAttribute('itemprop', itemprop);
-    row.appendChild(span);
-
-    return row;
-}
-
-function renderNewsCardSafe(news) {
-    const card = document.createElement('article');
-    card.className = 'card news-card';
-    card.setAttribute('role', 'article');
-    card.setAttribute('itemscope', '');
-    card.setAttribute('itemtype', 'https://schema.org/NewsArticle');
-
-    const safeImg = sanitizeUrl(news.imageUrl);
-    if (safeImg) {
-        const img = document.createElement('img');
-        img.className = 'card-image';
-        img.loading = 'lazy';
-        img.alt = '';
-        img.src = safeImg;
-        card.appendChild(img);
+    if (article.imageUrl) {
+        const safeImgUrl = sanitizeUrl(article.imageUrl);
+        if (safeImgUrl) {
+            const img = document.createElement('img');
+            img.src = safeImgUrl;
+            img.alt = article.title || 'News image';
+            img.loading = 'lazy';
+            img.style.width = '100%';
+            img.style.height = '160px';
+            img.style.objectFit = 'cover';
+            img.style.borderRadius = 'var(--radius-md) var(--radius-md) 0 0';
+            card.appendChild(img);
+        }
     }
 
     const content = document.createElement('div');
-    content.className = 'card-content';
+    content.style.padding = '1.25rem';
+    content.style.flex = '1';
+    content.style.display = 'flex';
+    content.style.flexDirection = 'column';
 
-    const meta = document.createElement('div');
-    meta.className = 'card-meta';
-
-    const badge = document.createElement('span');
-    badge.className = 'card-badge';
-    badge.textContent = news.source || 'Space News';
-    meta.appendChild(badge);
-
-    const time = document.createElement('time');
-    time.setAttribute('itemprop', 'datePublished');
-    time.setAttribute('datetime', news.publishedAt || '');
-    time.textContent = spaceAPI.getTimeAgo(news.publishedAt);
-    meta.appendChild(time);
-    content.appendChild(meta);
+    const source = document.createElement('span');
+    source.className = 'card-badge go';
+    source.textContent = (article.source || 'Space Dispatch') + ' · ' + spaceAPI.getTimeAgo(article.publishedAt);
+    source.style.marginBottom = '0.75rem';
+    content.appendChild(source);
 
     const title = document.createElement('h3');
-    title.setAttribute('itemprop', 'headline');
-    title.textContent = news.title || 'Untitled';
+    title.style.fontSize = '1.05rem';
+    title.style.marginBottom = '0.75rem';
+    title.style.lineHeight = '1.4';
+    title.textContent = article.title || 'Untitled Dispatch';
     content.appendChild(title);
 
-    if (news.summary) {
-        const p = document.createElement('p');
-        p.setAttribute('itemprop', 'description');
-        p.textContent = news.summary;
-        content.appendChild(p);
+    if (article.summary) {
+        const summary = document.createElement('p');
+        summary.style.fontSize = '0.85rem';
+        summary.style.color = 'var(--text-muted)';
+        summary.style.lineHeight = '1.6';
+        summary.style.marginBottom = '1rem';
+        summary.style.flex = '1';
+        summary.textContent = article.summary.slice(0, 180) + '…';
+        content.appendChild(summary);
     }
 
-    const safeUrl = sanitizeUrl(news.url);
+    const safeUrl = sanitizeUrl(article.url);
     if (safeUrl) {
-        const a = document.createElement('a');
-        a.className = 'read-more';
-        a.href = safeUrl;
-        a.target = '_blank';
-        a.rel = 'noopener noreferrer';
-        a.textContent = 'Read Full Dispatch →';
-        content.appendChild(a);
+        const link = document.createElement('a');
+        link.className = 'read-more';
+        link.href = safeUrl;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.textContent = 'Read Full Dispatch →';
+        content.appendChild(link);
     }
 
     card.appendChild(content);
     return card;
 }
 
-function renderVehicleCardSafe(vehicle) {
+function renderLaunchCardSafe(launch) {
     const card = document.createElement('article');
     card.className = 'card';
-    card.setAttribute('role', 'article');
-    card.setAttribute('itemscope', '');
-    card.setAttribute('itemtype', 'https://schema.org/Product');
 
-    const statusClass = vehicle.status === 'Active' ? 'success' :
-        (vehicle.status === 'Development' ? 'upcoming' : '');
+    const statusClass = launch.status === 'Success' ? 'success' :
+                        launch.status === 'Failure' ? 'danger' :
+                        launch.status === 'Go' ? 'go' : 'warning';
 
     const header = document.createElement('div');
-    header.className = 'launch-header';
+    header.className = 'card-header';
 
-    const title = document.createElement('h3');
-    title.setAttribute('itemprop', 'name');
-    title.textContent = vehicle.name;
+    const status = document.createElement('span');
+    status.className = `card-badge ${statusClass}`;
+    status.textContent = launch.isFallback ? 'Archive telemetry' : 'Live sync';
+    header.appendChild(status);
 
-    const badge = document.createElement('span');
-    badge.className = `card-badge ${statusClass}`;
-    badge.textContent = vehicle.status;
+    const time = document.createElement('span');
+    time.className = 'text-muted';
+    time.style.fontSize = '0.75rem';
+    time.style.fontFamily = 'var(--font-mono)';
+    time.textContent = spaceAPI.formatDateTime(launch.net);
+    header.appendChild(time);
 
-    header.appendChild(title);
-    header.appendChild(badge);
     card.appendChild(header);
 
-    const info = document.createElement('div');
-    info.className = 'launch-info';
-    info.appendChild(createInfoRow('provider', `${vehicle.provider} (${vehicle.country})`, 'manufacturer'));
-    info.appendChild(createInfoRow('rocket', `${vehicle.successRate}% Success Rate · ${vehicle.totalLaunches} launches`));
-    info.appendChild(createInfoRow('calendar', `${spaceAPI.formatCurrency(vehicle.costPerLaunch)} / flight`));
-    card.appendChild(info);
+    const title = document.createElement('h3');
+    title.className = 'card-title';
+    title.textContent = launch.name;
+    card.appendChild(title);
 
-    const desc = document.createElement('div');
-    desc.className = 'launch-description';
-    desc.textContent = `LEO: ${vehicle.payloadLEO ? vehicle.payloadLEO.toLocaleString() + ' kg' : 'N/A'} · H: ${vehicle.height}m · ${vehicle.reusable ? 'Reusable' : 'Expendable'}`;
-    card.appendChild(desc);
+    const provider = document.createElement('p');
+    provider.className = 'text-muted';
+    provider.style.fontSize = '0.88rem';
+    provider.style.marginBottom = '0.5rem';
+    provider.textContent = launch.provider;
+    card.appendChild(provider);
 
+    const rocket = document.createElement('p');
+    rocket.className = 'text-muted';
+    rocket.style.fontSize = '0.88rem';
+    rocket.style.marginBottom = '0.75rem';
+    rocket.textContent = launch.rocket;
+    card.appendChild(rocket);
+
+    const meta = document.createElement('div');
+    meta.style.display = 'flex';
+    meta.style.justifyContent = 'space-between';
+    meta.style.fontSize = '0.75rem';
+    meta.style.fontFamily = 'var(--font-mono)';
+    meta.style.color = 'var(--text-muted)';
+    meta.style.marginTop = 'auto';
+
+    const location = document.createElement('span');
+    location.textContent = launch.location || 'TBD';
+    meta.appendChild(location);
+
+    const type = document.createElement('span');
+    type.textContent = launch.missionType || 'Orbital';
+    meta.appendChild(type);
+
+    card.appendChild(meta);
     return card;
 }
 
-// Backward-compat wrappers returning outerHTML
-function renderLaunchCard(l) { return renderLaunchCardSafe(l).outerHTML; }
-function renderNewsCard(n) { return renderNewsCardSafe(n).outerHTML; }
-function renderVehicleCard(v) { return renderVehicleCardSafe(v).outerHTML; }
+function renderVehicleCardSafe(vehicle) {
+    const card = document.createElement('article');
+    card.className = 'card';
 
-// ============================================
-// NAVIGATION & ACCESSIBILITY
-// ============================================
+    const header = document.createElement('div');
+    header.className = 'card-header';
+    header.style.justifyContent = 'space-between';
+    header.style.alignItems = 'flex-start';
 
-document.addEventListener('DOMContentLoaded', () => {
-    initNav();
-});
+    const status = document.createElement('span');
+    status.className = `card-badge ${vehicle.status === 'Active' ? 'go' : 'warning'}`;
+    status.textContent = vehicle.status;
+    header.appendChild(status);
 
-function initNav() {
+    const provider = document.createElement('span');
+    provider.className = 'text-muted';
+    provider.style.fontSize = '0.75rem';
+    provider.textContent = vehicle.provider;
+    header.appendChild(provider);
+
+    card.appendChild(header);
+
+    const title = document.createElement('h3');
+    title.className = 'card-title';
+    title.textContent = vehicle.name;
+    card.appendChild(title);
+
+    const specs = document.createElement('div');
+    specs.style.display = 'grid';
+    specs.style.gridTemplateColumns = 'repeat(2, 1fr)';
+    specs.style.gap = '0.75rem';
+    specs.style.margin = '1rem 0';
+    specs.style.fontSize = '0.85rem';
+
+    const specItems = [
+        { label: 'LEO', value: vehicle.payloadLEO ? `${(vehicle.payloadLEO / 1000).toFixed(1)}t` : 'N/A' },
+        { label: 'GTO', value: vehicle.payloadGTO ? `${(vehicle.payloadGTO / 1000).toFixed(1)}t` : 'N/A' },
+        { label: 'Height', value: `${vehicle.height}m` },
+        { label: 'Thrust', value: `${vehicle.thrust.toLocaleString()} kN` }
+    ];
+
+    specItems.forEach(spec => {
+        const div = document.createElement('div');
+        div.style.display = 'flex';
+        div.style.flexDirection = 'column';
+        const label = document.createElement('span');
+        label.className = 'text-muted';
+        label.style.fontSize = '0.7rem';
+        label.textContent = spec.label;
+        const value = document.createElement('span');
+        value.style.fontFamily = 'var(--font-mono)';
+        value.style.fontSize = '0.9rem';
+        value.textContent = spec.value;
+        div.appendChild(label);
+        div.appendChild(value);
+        specs.appendChild(div);
+    });
+
+    card.appendChild(specs);
+
+    const footer = document.createElement('div');
+    footer.style.display = 'flex';
+    footer.style.justifyContent = 'space-between';
+    footer.style.alignItems = 'center';
+    footer.style.marginTop = '1rem';
+    footer.style.paddingTop = '1rem';
+    footer.style.borderTop = '1px solid var(--border-subtle)';
+
+    const cost = document.createElement('span');
+    cost.className = 'text-muted';
+    cost.style.fontSize = '0.75rem';
+    cost.textContent = spaceAPI.formatCurrency(vehicle.costPerLaunch);
+    footer.appendChild(cost);
+
+    const success = document.createElement('span');
+    success.className = 'text-muted';
+    success.style.fontSize = '0.75rem';
+    success.textContent = `${vehicle.successRate}% success`;
+    footer.appendChild(success);
+
+    card.appendChild(footer);
+    return card;
+}
+
+function initMobileMenu() {
     const toggle = document.querySelector('.menu-toggle');
-    const menu = document.querySelector('.nav-menu');
-    if (!toggle || !menu) return;
+    const nav = document.querySelector('.nav-menu');
+
+    if (!toggle || !nav) return;
 
     toggle.addEventListener('click', () => {
-        const isOpen = menu.classList.toggle('active');
-        toggle.setAttribute('aria-expanded', String(isOpen));
+        const expanded = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', (!expanded).toString());
+        nav.classList.toggle('active');
     });
 }
+
+function initScrollAnimations() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('fade-in');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.card, .stat-card').forEach(el => observer.observe(el));
+}
+
+function updateTelemetryStatus() {
+    const statusDot = document.getElementById('telemetry-status');
+    if (!statusDot) return;
+
+    const isOnline = navigator.onLine;
+    statusDot.className = `pulse-dot ${isOnline ? 'online' : 'offline'}`;
+    statusDot.title = isOnline ? 'Live telemetry active' : 'Offline mode';
+
+    window.addEventListener('online', () => {
+        statusDot.className = 'pulse-dot online';
+        statusDot.title = 'Live telemetry active';
+    });
+
+    window.addEventListener('offline', () => {
+        statusDot.className = 'pulse-dot offline';
+        statusDot.title = 'Offline mode';
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initMobileMenu();
+    initScrollAnimations();
+    updateTelemetryStatus();
+
+    const yearSpan = document.getElementById('current-year');
+    if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+});
