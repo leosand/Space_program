@@ -80,6 +80,7 @@ function renderNewsCardSafe(article) {
 function renderLaunchCardSafe(launch) {
     const card = document.createElement('article');
     card.className = 'card';
+    card.style.cursor = 'pointer';
 
     const statusClass = launch.status === 'Success' ? 'success' :
                         launch.status === 'Failure' ? 'danger' :
@@ -138,6 +139,31 @@ function renderLaunchCardSafe(launch) {
     meta.appendChild(type);
 
     card.appendChild(meta);
+
+    // Click to navigate
+    card.addEventListener('click', (e) => {
+        if (e.target.tagName !== 'BUTTON' && !e.target.closest('button')) {
+            location.href = `launch.html?id=${launch.id}`;
+        }
+    });
+
+    // Bookmark button
+    const isFav = Bookmarks && Bookmarks.has(launch.id);
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-secondary';
+    btn.style.marginTop = '1rem';
+    btn.style.width = '100%';
+    btn.textContent = isFav ? '★ Bookmarked' : '☆ Bookmark';
+    btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (Bookmarks) {
+            isFav ? Bookmarks.remove(launch.id) : Bookmarks.add(launch.id);
+            Toast.show(isFav ? 'Removed from bookmarks' : 'Added to bookmarks');
+            btn.textContent = isFav ? '☆ Bookmark' : '★ Bookmarked';
+        }
+    });
+    card.appendChild(btn);
+
     return card;
 }
 
