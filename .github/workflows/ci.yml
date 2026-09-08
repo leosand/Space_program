@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [master]
+    branches: [master, feat/*]
   pull_request:
     branches: [master]
 
@@ -17,12 +17,11 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Install HTML validation tooling
-        run: npm install -g htmlhint
+      - name: Install Linting & Validation Tooling
+        run: npm install -g htmlhint eslint
 
-      - name: Lint HTML
-        run: htmlhint *.html css/*.css js/*.js || true
+      - name: Lint HTML Structure
+        run: htmlhint *.html
 
-      - name: Link check (basic)
-        run: |
-          echo "Link checking is configured in CI; customize with a link-checker as needed."
+      - name: Lint JavaScript Files
+        run: npx eslint js/*.js --no-eslintrc --env browser,es2021 --rule 'no-undef: off' || true
