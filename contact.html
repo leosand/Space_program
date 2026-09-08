@@ -6,15 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Contact Us | Space Program</title>
-    <meta name="description"
-        content="Contact the Space Program team - we'd love to hear from fellow space enthusiasts!">
+    <title>Contact & Mission Control Registry | Space Program</title>
+    <meta name="description" content="Get in touch with the Space Program maintainer and telemetry contributors.">
     <meta name="robots" content="index, follow">
+
+    <link rel="canonical" href="https://leosand.github.io/Space_program/contact.html">
 
     <link rel="icon" type="image/svg+xml"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
-
-    <meta name="theme-color" content="#050508">
+    <meta name="theme-color" content="#06070a">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,7 +28,8 @@
     <header class="header" role="banner">
         <div class="container">
             <a href="index.html" class="logo" aria-label="Space Program Home">
-                🚀 SPACE PROGRAM
+                <span>🚀 SPACE PROGRAM</span>
+                <span class="logo-telemetry">CONTACT</span>
             </a>
             <button class="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
                 <span></span>
@@ -48,109 +49,56 @@
     </header>
 
     <main id="main-content" class="pt-header" role="main">
-        <section class="section">
+        <section class="section" style="padding-top: 2rem;">
             <div class="container">
-                <div class="section-header" style="text-align: left; margin-bottom: 2rem;">
-                    <h1 class="text-gradient">Contact Us</h1>
-                    <p>We'd love to hear from fellow space enthusiasts!</p>
+                <div class="section-header">
+                    <h1><span class="text-gradient">COMMUNITY & ATTRIBUTION</span></h1>
+                    <p>Space Program is an independent, non-commercial telemetry initiative created by space exploration enthusiasts.</p>
                 </div>
 
-                <div class="grid grid-2" style="gap: 2rem;">
-                    <!-- Contact Info Card -->
-                    <div class="card" style="padding: 2rem;">
-                        <div style="margin-bottom: 2rem;">
-                            <div style="font-size: 3rem; margin-bottom: 1rem;">📧</div>
-                            <h2 style="margin-bottom: 1rem; color: var(--accent-cyan);">Get in Touch</h2>
-                            <p style="line-height: 1.8; margin-bottom: 1.5rem;">
-                                Space Program is a passion project created by space enthusiasts who believe in
-                                making space exploration data accessible to everyone. We operate without any
-                                financial benefit, driven purely by our love for space exploration.
-                            </p>
-                            <p style="line-height: 1.8;">
-                                Whether you have questions, suggestions, found a bug, or just want to share your
-                                excitement about the latest launch, we'd love to hear from you!
-                            </p>
+                <div class="grid grid-2" style="gap: 1.5rem; margin-bottom: 2rem;">
+                    <!-- Maintainer Card -->
+                    <div class="card">
+                        <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-cyan); text-transform: uppercase; margin-bottom: 0.5rem;">
+                            Lead Engineering
                         </div>
-
-                        <div
-                            style="background: rgba(0, 212, 255, 0.1); border-radius: var(--radius-lg); padding: 1.5rem; border: 1px solid rgba(0, 212, 255, 0.2);">
-                            <h3 style="margin-bottom: 1rem; font-size: 1.125rem;">Email Us</h3>
-                            <a href="mailto:contact@example.com" class="btn btn-primary"
-                                style="display: inline-flex; align-items: center; gap: 0.5rem;">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2">
-                                    <path
-                                        d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                                    <polyline points="22,6 12,13 2,6" />
-                                </svg>
-                                contact@example.com
+                        <h2 style="font-size: 1.4rem; margin-bottom: 0.75rem;">Léonel Sandjong</h2>
+                        <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.5rem;">
+                            Architected with precision dark-mode telemetry, strict sanitization standards, and zero user-tracking scripts.
+                        </p>
+                        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                            <a href="https://github.com/leosand/Space_program" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                                GitHub Repository
+                            </a>
+                            <a href="mailto:contact@example.com" class="btn btn-secondary">
+                                Dispatch Email
                             </a>
                         </div>
                     </div>
 
-                    <!-- FAQ Card -->
-                    <div class="card" style="padding: 2rem;">
-                        <h2 style="margin-bottom: 1.5rem; color: var(--accent-purple);">Frequently Asked Questions</h2>
-
-                        <div style="margin-bottom: 1.5rem;">
-                            <h3 style="font-size: 1rem; margin-bottom: 0.5rem; color: var(--accent-cyan);">Where does
-                                the data come from?</h3>
-                            <p style="font-size: 0.9375rem; line-height: 1.6; color: var(--text-muted);">
-                                We aggregate data from public APIs including NASA, SpaceX, TheSpaceDevs (Launch Library
-                                2),
-                                and various space news RSS feeds.
-                            </p>
+                    <!-- Telemetry Attribution -->
+                    <div class="card">
+                        <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-purple); text-transform: uppercase; margin-bottom: 0.5rem;">
+                            Data Transparency
                         </div>
-
-                        <div style="margin-bottom: 1.5rem;">
-                            <h3 style="font-size: 1rem; margin-bottom: 0.5rem; color: var(--accent-cyan);">Is this a
-                                commercial website?</h3>
-                            <p style="font-size: 0.9375rem; line-height: 1.6; color: var(--text-muted);">
-                                No! Space Program is a non-commercial passion project. We don't run ads, sell data,
-                                or generate any revenue. It's made by enthusiasts, for enthusiasts.
-                            </p>
-                        </div>
-
-                        <div style="margin-bottom: 1.5rem;">
-                            <h3 style="font-size: 1rem; margin-bottom: 0.5rem; color: var(--accent-cyan);">Can I
-                                contribute?</h3>
-                            <p style="font-size: 0.9375rem; line-height: 1.6; color: var(--text-muted);">
-                                We welcome feedback, suggestions, and bug reports! Feel free to reach out via email
-                                if you'd like to contribute ideas or improvements.
-                            </p>
-                        </div>
-
-                        <div>
-                            <h3 style="font-size: 1rem; margin-bottom: 0.5rem; color: var(--accent-cyan);">How often is
-                                data updated?</h3>
-                            <p style="font-size: 0.9375rem; line-height: 1.6; color: var(--text-muted);">
-                                Launch data is fetched in real-time from APIs when you visit the site.
-                                News feeds are refreshed regularly to bring you the latest space updates.
-                            </p>
-                        </div>
+                        <h2 style="font-size: 1.4rem; margin-bottom: 0.75rem;">Open Data Sources</h2>
+                        <ul class="footer-links" style="font-size: 0.88rem; gap: 0.6rem;">
+                            <li><strong>Launch Library 2</strong> — Primary orbital manifest schedule & pad coordinates.</li>
+                            <li><strong>Spaceflight News API (SNAPI v4)</strong> — Syndicated orbital journalism articles.</li>
+                            <li><strong>NASA Open API</strong> — Astronomy Picture of the Day imagery & mission metadata.</li>
+                            <li><strong>Public Agency RSS</strong> — ESA, NASA JPL, and scientific telemetry feeds.</li>
+                        </ul>
                     </div>
                 </div>
 
-                <!-- Social Links -->
-                <div class="card" style="padding: 2rem; margin-top: 2rem; text-align: center;">
-                    <h2 style="margin-bottom: 1rem;">Join the Space Community</h2>
-                    <p style="margin-bottom: 1.5rem; color: var(--text-muted);">
-                        Connect with other space enthusiasts and stay updated on the latest launches!
+                <div class="card" style="text-align: center; padding: 2rem;">
+                    <h3 style="margin-bottom: 0.6rem;">Contribute Telemetry or Bug Reports</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; max-width: 60ch; margin: 0 auto 1.25rem;">
+                        Found a spec discrepancy on a launch vehicle or want to propose an additional open telemetry pipeline?
                     </p>
-                    <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-                        <a href="https://twitter.com/search?q=%23SpaceLaunch" target="_blank" rel="noopener"
-                            class="btn btn-secondary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
-                            🐦 #SpaceLaunch on X
-                        </a>
-                        <a href="https://www.reddit.com/r/spacex/" target="_blank" rel="noopener"
-                            class="btn btn-secondary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
-                            🔴 r/SpaceX
-                        </a>
-                        <a href="https://www.reddit.com/r/space/" target="_blank" rel="noopener"
-                            class="btn btn-secondary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
-                            🌌 r/Space
-                        </a>
-                    </div>
+                    <a href="https://github.com/leosand/Space_program/issues" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+                        Open GitHub Issue
+                    </a>
                 </div>
             </div>
         </section>
@@ -162,7 +110,7 @@
             <div class="footer-grid">
                 <div class="footer-brand">
                     <a href="index.html" class="logo">🚀 SPACE PROGRAM</a>
-                    <p>A passion project by space enthusiasts, for space enthusiasts.</p>
+                    <p>Open telemetry platform for space exploration research and education.</p>
                 </div>
                 <div>
                     <h4>Navigation</h4>
@@ -175,16 +123,23 @@
                     </ul>
                 </div>
                 <div>
-                    <h4>About</h4>
+                    <h4>APIs</h4>
                     <ul class="footer-links">
-                        <li><a href="privacy.html">Privacy Policy</a></li>
-                        <li><a href="terms.html">Terms of Service</a></li>
+                        <li><a href="https://ll.thespacedevs.com" target="_blank" rel="noopener noreferrer">Launch Library 2</a></li>
+                        <li><a href="https://api.nasa.gov" target="_blank" rel="noopener noreferrer">NASA APIs</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Project</h4>
+                    <ul class="footer-links">
+                        <li><a href="privacy.html">Privacy</a></li>
+                        <li><a href="terms.html">Terms</a></li>
                         <li><a href="contact.html">Contact</a></li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Space Program. Non-commercial project. All rights reserved.</p>
+                <p>&copy; 2026 Léonel Sandjong. MIT License.</p>
             </div>
         </div>
     </footer>
