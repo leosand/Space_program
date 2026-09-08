@@ -143,7 +143,7 @@ function renderLaunchCardSafe(launch) {
     // Click to navigate
     card.addEventListener('click', (e) => {
         if (e.target.tagName !== 'BUTTON' && !e.target.closest('button')) {
-            location.href = `launch.html?id=${launch.id}`;
+            window.location.href = `launch.html?id=${launch.id}`;
         }
     });
 
@@ -154,6 +154,7 @@ function renderLaunchCardSafe(launch) {
     btn.style.marginTop = '1rem';
     btn.style.width = '100%';
     btn.textContent = isFav ? '★ Bookmarked' : '☆ Bookmark';
+    btn.setAttribute('aria-label', isFav ? 'Remove from bookmarks' : 'Add to bookmarks');
     btn.addEventListener('click', (e) => {
         e.stopPropagation();
         if (Bookmarks) {
