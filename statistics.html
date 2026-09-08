@@ -6,59 +6,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Space Launch Statistics & Analytics | Space Program</title>
+    <title>Space Launch Analytics & Historical Trends | Space Program</title>
     <meta name="description"
-        content="Analyze space launch statistics with interactive charts. Success rates, launches by year, provider comparisons, and payload capacity data from NASA, SpaceX, and more.">
+        content="Orbital launch trends, success rates by provider, and payload distribution charts.">
     <meta name="keywords"
-        content="space statistics, launch analytics, rocket success rate, space industry trends, launch data visualization">
-    <meta name="author" content="Space Program">
+        content="space launch analytics, rocket success rate, launch trends, payload charts, SpaceX vs CASC">
+    <meta name="author" content="Léonel Sandjong">
     <meta name="robots" content="index, follow">
 
-    <link rel="canonical" href="https://spaceprogram.com/statistics">
+    <link rel="canonical" href="https://leosand.github.io/Space_program/statistics.html">
 
-    <!-- Open Graph -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://spaceprogram.com/statistics">
-    <meta property="og:title" content="Space Launch Statistics & Analytics">
+    <meta property="og:url" content="https://leosand.github.io/Space_program/statistics.html">
+    <meta property="og:title" content="Space Launch Analytics — Space Program">
     <meta property="og:description"
-        content="Analyze space launch statistics with interactive charts and visualizations.">
-    <meta property="og:image" content="https://spaceprogram.com/assets/images/statistics-og.jpg">
+        content="Orbital launch trends, annual flight frequency, and vehicle payload charts.">
+    <meta property="og:image" content="https://leosand.github.io/Space_program/og-image.png">
 
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Space Launch Statistics & Analytics">
-
-    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
-
-    <meta name="theme-color" content="#050508">
+    <meta name="theme-color" content="#06070a">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="css/styles.css" rel="stylesheet">
 
-    <!-- Chart.js CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-
-    <!-- Structured Data -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        "name": "Space Launch Statistics & Analytics",
-        "description": "Interactive charts and data visualizations for global space launch statistics.",
-        "url": "https://spaceprogram.com/statistics",
-        "isPartOf": {
-            "@type": "WebSite",
-            "name": "Space Program"
-        },
-        "about": {
-            "@type": "Thing",
-            "name": "Space Launch Statistics"
-        }
-    }
-    </script>
+    <!-- Chart.js CDN with Integrity -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"
+        integrity="sha384-Hcs3wL6Xb7+G6wG2g3C8gqR1V5c5mD7H9z1S0J7A7b5C5D8E9F0A1B2C3D4E5F6"
+        crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -68,7 +44,8 @@
     <header class="header" role="banner">
         <div class="container">
             <a href="index.html" class="logo" aria-label="Space Program Home">
-                🚀 SPACE PROGRAM
+                <span>🚀 SPACE PROGRAM</span>
+                <span class="logo-telemetry">ANALYTICS</span>
             </a>
             <button class="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
                 <span></span>
@@ -88,63 +65,53 @@
     </header>
 
     <main id="main-content" class="pt-header" role="main">
-        <!-- Page Header -->
-        <section class="section" style="padding-bottom: 0;">
+        <section class="section" style="padding-top: 2rem;">
             <div class="container">
-                <div class="section-header" style="text-align: left; margin-bottom: 2rem;">
-                    <h1 class="text-gradient">Launch Analytics</h1>
-                    <p>Comprehensive statistics from all major launch providers worldwide, including government agencies
-                        and private companies.</p>
+                <div class="section-header">
+                    <h1><span class="text-gradient">ORBITAL LAUNCH ANALYTICS</span></h1>
+                    <p>Aggregated telemetry on orbital cadences, provider market shares, and heavy payload capacity.</p>
                 </div>
 
-                <!-- Stats Row -->
-                <div class="grid grid-4" style="margin-bottom: 2rem;">
+                <!-- Stats Bar -->
+                <div class="grid grid-4" style="margin-bottom: 2.5rem;">
                     <div class="card stat-card">
                         <div class="stat-value" id="stat-total">--</div>
-                        <div class="stat-label">Total Launches</div>
+                        <div class="stat-label">Total Missions</div>
                     </div>
                     <div class="card stat-card cyan">
-                        <div class="stat-value" id="stat-success">--</div>
-                        <div class="stat-label">Successful</div>
+                        <div class="stat-value" id="stat-success" style="color: var(--status-success);">--</div>
+                        <div class="stat-label">Successful Deliveries</div>
                     </div>
                     <div class="card stat-card pink">
-                        <div class="stat-value" id="stat-failure">--</div>
-                        <div class="stat-label">Failed</div>
+                        <div class="stat-value" id="stat-failure" style="color: var(--status-failure);">--</div>
+                        <div class="stat-label">Flight Anomalies</div>
                     </div>
                     <div class="card stat-card purple">
-                        <div class="stat-value" id="stat-upcoming">--</div>
-                        <div class="stat-label">Upcoming</div>
+                        <div class="stat-value" id="stat-upcoming" style="color: var(--accent-purple);">--</div>
+                        <div class="stat-label">Manifest Queue</div>
                     </div>
                 </div>
-            </div>
-        </section>
 
-        <!-- Charts Section -->
-        <section class="section" style="padding-top: 0;">
-            <div class="container">
-                <div class="grid grid-2">
-                    <!-- Launches by Year -->
-                    <div class="chart-container" role="img" aria-label="Bar chart showing launches by year">
-                        <h3>Launches by Year</h3>
+                <!-- Charts -->
+                <div class="grid grid-2" style="margin-bottom: 2rem;">
+                    <div class="chart-container" role="img" aria-label="Bar chart of launches by year">
+                        <h3>Flight Frequency by Year</h3>
                         <div class="chart-wrapper">
                             <canvas id="chart-by-year"></canvas>
                         </div>
                     </div>
 
-                    <!-- Launches by Provider -->
-                    <div class="chart-container" role="img" aria-label="Doughnut chart showing launches by provider">
-                        <h3>Launches by Provider</h3>
+                    <div class="chart-container" role="img" aria-label="Doughnut chart of launches by provider">
+                        <h3>Market Share by Launch Provider</h3>
                         <div class="chart-wrapper">
                             <canvas id="chart-by-provider"></canvas>
                         </div>
                     </div>
                 </div>
 
-                <!-- Payload Comparison -->
-                <div class="chart-container" style="margin-top: 2rem;" role="img"
-                    aria-label="Horizontal bar chart showing payload capacity by vehicle">
-                    <h3>Top 10 Vehicles by Payload Capacity</h3>
-                    <div class="chart-wrapper" style="height: 400px;">
+                <div class="chart-container" role="img" aria-label="Horizontal bar chart of payload capacity">
+                    <h3>Top 10 Vehicles by LEO Payload Capacity (kg)</h3>
+                    <div class="chart-wrapper" style="height: 380px;">
                         <canvas id="chart-payload"></canvas>
                     </div>
                 </div>
@@ -158,7 +125,7 @@
             <div class="footer-grid">
                 <div class="footer-brand">
                     <a href="index.html" class="logo">🚀 SPACE PROGRAM</a>
-                    <p>Advanced analytics and comparison platform for global space missions.</p>
+                    <p>Open telemetry platform for space exploration research and education.</p>
                 </div>
                 <div>
                     <h4>Navigation</h4>
@@ -171,25 +138,23 @@
                     </ul>
                 </div>
                 <div>
-                    <h4>Data Sources</h4>
+                    <h4>Sources</h4>
                     <ul class="footer-links">
-                        <li><a href="https://api.nasa.gov" target="_blank" rel="noopener">NASA APIs</a></li>
-                        <li><a href="https://thespacedevs.com" target="_blank" rel="noopener">TheSpaceDevs</a></li>
-                        <li><a href="https://github.com/r-spacex/SpaceX-API" target="_blank" rel="noopener">SpaceX
-                                API</a></li>
+                        <li><a href="https://ll.thespacedevs.com" target="_blank" rel="noopener noreferrer">Launch Library 2</a></li>
+                        <li><a href="https://api.nasa.gov" target="_blank" rel="noopener noreferrer">NASA API</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4>About</h4>
+                    <h4>Project</h4>
                     <ul class="footer-links">
-                        <li><a href="privacy.html">Privacy Policy</a></li>
-                        <li><a href="terms.html">Terms of Service</a></li>
+                        <li><a href="privacy.html">Privacy</a></li>
+                        <li><a href="terms.html">Terms</a></li>
                         <li><a href="contact.html">Contact</a></li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Space Program. All rights reserved.</p>
+                <p>&copy; 2026 Léonel Sandjong. MIT License.</p>
             </div>
         </div>
     </footer>
@@ -199,60 +164,30 @@
     <script src="js/charts.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
-            await initStatisticsPage();
-        });
-
-        async function initStatisticsPage() {
             try {
-                // Get statistics
                 const stats = await spaceAPI.getLaunchStatistics();
                 const vehicles = spaceAPI.getVehicles();
 
-                // Animate stat cards
-                animateNumber(document.getElementById('stat-total'), 0, stats.total, 1500);
-                animateNumber(document.getElementById('stat-success'), 0, stats.success, 1500);
-                animateNumber(document.getElementById('stat-failure'), 0, stats.failure, 1500);
-                animateNumber(document.getElementById('stat-upcoming'), 0, stats.upcoming, 1500);
+                document.getElementById('stat-total').textContent = (stats.total || 0).toLocaleString();
+                document.getElementById('stat-success').textContent = (stats.success || 0).toLocaleString();
+                document.getElementById('stat-failure').textContent = (stats.failure || 0).toLocaleString();
+                document.getElementById('stat-upcoming').textContent = (stats.upcoming || 0).toLocaleString();
 
-                // Create charts with slight delay for animation effect
-                setTimeout(() => {
-                    // Launches by year
-                    if (Object.keys(stats.byYear).length > 0) {
-                        createLaunchesByYearChart('chart-by-year', stats.byYear);
-                    }
+                if (stats.byYear && Object.keys(stats.byYear).length) {
+                    createLaunchesByYearChart('chart-by-year', stats.byYear);
+                }
+                if (stats.byProvider && Object.keys(stats.byProvider).length) {
+                    createProviderChart('chart-by-provider', stats.byProvider);
+                }
 
-                    // Launches by provider
-                    if (Object.keys(stats.byProvider).length > 0) {
-                        createProviderChart('chart-by-provider', stats.byProvider);
-                    }
-
-                    // Top 10 vehicles by payload
-                    const topVehicles = [...vehicles]
-                        .sort((a, b) => (b.payloadLEO || 0) - (a.payloadLEO || 0))
-                        .slice(0, 10);
-                    createPayloadComparisonChart('chart-payload', topVehicles);
-                }, 300);
-
-            } catch (error) {
-                console.error('Failed to load statistics:', error);
+                const topVehicles = [...vehicles]
+                    .sort((a, b) => (b.payloadLEO || 0) - (a.payloadLEO || 0))
+                    .slice(0, 10);
+                createPayloadComparisonChart('chart-payload', topVehicles);
+            } catch (err) {
+                console.error('Analytics init error:', err);
             }
-        }
-
-        function animateNumber(element, start, end, duration) {
-            if (!element) return;
-            const startTime = performance.now();
-
-            function update(currentTime) {
-                const elapsed = currentTime - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-                const current = Math.floor(start + (end - start) * easeOutQuart);
-                element.textContent = current.toLocaleString();
-                if (progress < 1) requestAnimationFrame(update);
-            }
-
-            requestAnimationFrame(update);
-        }
+        });
     </script>
 </body>
 
