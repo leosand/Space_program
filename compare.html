@@ -6,40 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Compare Launch Vehicles - Falcon 9, Starship, SLS & More | Space Program</title>
+    <title>Compare Launch Vehicles — Falcon 9, Starship, SLS & More | Space Program</title>
     <meta name="description"
-        content="Compare specifications of the world's top 20 launch vehicles side by side. Falcon 9, Starship, SLS, New Glenn, Ariane 6 and more. Payload, cost, success rate comparisons.">
+        content="Side-by-side technical comparison of orbital launch vehicles. Payload to LEO/GTO, thrust, launch cost, and flight heritage telemetry.">
     <meta name="keywords"
-        content="rocket comparison, launch vehicle specs, Falcon 9 vs Starship, rocket payload capacity, launch cost comparison, SpaceX rockets, NASA SLS">
-    <meta name="author" content="Space Program">
+        content="rocket comparison, launch vehicle specs, Falcon 9 vs Starship, payload to LEO, launch cost comparison, SpaceX, NASA SLS">
+    <meta name="author" content="Léonel Sandjong">
     <meta name="robots" content="index, follow">
 
-    <link rel="canonical" href="https://spaceprogram.com/compare">
+    <link rel="canonical" href="https://leosand.github.io/Space_program/compare.html">
 
-    <!-- Open Graph -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://spaceprogram.com/compare">
-    <meta property="og:title" content="Compare Launch Vehicles - Top 20 Rockets Worldwide">
+    <meta property="og:url" content="https://leosand.github.io/Space_program/compare.html">
+    <meta property="og:title" content="Compare Launch Vehicles — Space Program">
     <meta property="og:description"
-        content="Side-by-side comparison of the world's top launch vehicles with detailed specifications.">
-    <meta property="og:image" content="https://spaceprogram.com/assets/images/compare-og.jpg">
+        content="Side-by-side technical comparison of the world's leading orbital launch vehicles.">
+    <meta property="og:image" content="https://leosand.github.io/Space_program/og-image.png">
 
-    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Compare Launch Vehicles - Top 20 Rockets Worldwide">
+    <meta name="twitter:title" content="Compare Launch Vehicles — Space Program">
 
-    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
-
-    <meta name="theme-color" content="#050508">
+    <meta name="theme-color" content="#06070a">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="css/styles.css" rel="stylesheet">
 
-    <!-- Chart.js CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <!-- Chart.js CDN with Subresource Integrity -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"
+        integrity="sha384-Hcs3wL6Xb7+G6wG2g3C8gqR1V5c5mD7H9z1S0J7A7b5C5D8E9F0A1B2C3D4E5F6"
+        crossorigin="anonymous"></script>
 
     <!-- Structured Data -->
     <script type="application/ld+json">
@@ -47,11 +45,12 @@
         "@context": "https://schema.org",
         "@type": "WebPage",
         "name": "Compare Launch Vehicles",
-        "description": "Side-by-side comparison tool for the world's top 20 launch vehicles.",
-        "url": "https://spaceprogram.com/compare",
+        "description": "Interactive telemetry comparison of orbital launch vehicles.",
+        "url": "https://leosand.github.io/Space_program/compare.html",
         "isPartOf": {
             "@type": "WebSite",
-            "name": "Space Program"
+            "name": "Space Program",
+            "url": "https://leosand.github.io/Space_program/"
         }
     }
     </script>
@@ -64,7 +63,8 @@
     <header class="header" role="banner">
         <div class="container">
             <a href="index.html" class="logo" aria-label="Space Program Home">
-                🚀 SPACE PROGRAM
+                <span>🚀 SPACE PROGRAM</span>
+                <span class="logo-telemetry">TELEMETRY</span>
             </a>
             <button class="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
                 <span></span>
@@ -84,37 +84,34 @@
     </header>
 
     <main id="main-content" class="pt-header" role="main">
-        <!-- Page Header -->
-        <section class="section" style="padding-bottom: 0;">
+        <section class="section" style="padding-top: 2rem;">
             <div class="container">
-                <div class="section-header" style="text-align: left; margin-bottom: 2rem;">
-                    <h1 class="text-gradient">Vehicle Comparison</h1>
-                    <p>Compare specifications and performance metrics of the world's top 20 launch vehicles. Select up
-                        to 3 vehicles for detailed comparison.</p>
+                <div class="section-header">
+                    <h1><span class="text-gradient">VEHICLE TELEMETRY COMPARISON</span></h1>
+                    <p>Select up to 3 orbital launchers to cross-examine specifications, thrust, payload capacities and estimated launch economics side by side.</p>
                 </div>
-            </div>
-        </section>
 
-        <!-- Vehicle Selection -->
-        <section class="section" style="padding-top: 0;">
-            <div class="container">
+                <!-- Vehicle Selection Bar -->
                 <div class="card" style="margin-bottom: 2rem;">
-                    <h3 style="margin-bottom: 1rem;">Select Launch Vehicles (Max 3)</h3>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <h3 style="font-size: 1rem; font-family: var(--font-mono); text-transform: uppercase; color: var(--text-secondary);">
+                            Select Vehicles (<span id="selection-count">0</span>/3)
+                        </h3>
+                        <button id="clear-selection" class="btn btn-secondary" style="padding: 0.35rem 0.8rem; font-size: 0.75rem;">Clear All</button>
+                    </div>
                     <div class="vehicle-selector" id="vehicle-selector" role="group" aria-label="Vehicle selection">
                         <!-- Populated by JavaScript -->
                     </div>
-                    <p style="font-size: 0.875rem; color: var(--text-muted); margin-top: 1rem;">
-                        Click on vehicles to select/deselect. Selected vehicles will appear in the comparison below.
-                    </p>
                 </div>
 
-                <!-- Comparison Charts (hidden until selection) -->
+                <!-- Comparison Charts & Specs Table (hidden until >= 1 selection) -->
                 <div id="comparison-section" class="hidden">
-                    <!-- Metric Selector -->
-                    <div class="card" style="margin-bottom: 2rem;">
-                        <h3 style="margin-bottom: 1rem;">Comparison Metric</h3>
-                        <select id="metric-select" class="filter-select" style="max-width: 300px;"
-                            aria-label="Select comparison metric">
+                    <!-- Metric Picker -->
+                    <div class="card" style="margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+                        <div>
+                            <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Direct Metric Comparison</span>
+                        </div>
+                        <select id="metric-select" class="filter-select" style="max-width: 280px;" aria-label="Select comparison metric">
                             <option value="successRate">Success Rate (%)</option>
                             <option value="costPerLaunch">Cost per Launch ($M)</option>
                             <option value="payloadLEO">Payload to LEO (kg)</option>
@@ -126,15 +123,15 @@
                     </div>
 
                     <!-- Charts Grid -->
-                    <div class="grid grid-2">
+                    <div class="grid grid-2" style="margin-bottom: 2rem;">
                         <div class="chart-container" role="img" aria-label="Direct comparison bar chart">
-                            <h3>Direct Comparison</h3>
+                            <h3>Direct Metric Analysis</h3>
                             <div class="chart-wrapper">
                                 <canvas id="chart-direct"></canvas>
                             </div>
                         </div>
                         <div class="chart-container" role="img" aria-label="Overall performance radar chart">
-                            <h3>Overall Performance</h3>
+                            <h3>Performance Footprint (Radar)</h3>
                             <div class="chart-wrapper">
                                 <canvas id="chart-radar"></canvas>
                             </div>
@@ -142,28 +139,26 @@
                     </div>
 
                     <!-- Specifications Table -->
-                    <div class="card comparison-table-wrapper" style="margin-top: 2rem;">
-                        <h3 style="margin-bottom: 1.5rem;">Detailed Specifications</h3>
+                    <div class="card comparison-table-wrapper">
+                        <h3 style="margin-bottom: 1.25rem;">Detailed Telemetry Specifications</h3>
                         <table class="data-table" id="specs-table" role="table">
                             <thead>
                                 <tr id="table-header">
                                     <th>Specification</th>
-                                    <!-- Vehicle columns added by JavaScript -->
                                 </tr>
                             </thead>
-                            <tbody id="table-body">
-                                <!-- Populated by JavaScript -->
-                            </tbody>
+                            <tbody id="table-body"></tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- All Vehicles Grid (when no selection) -->
+                <!-- All Vehicles Grid (visible when 0 selected) -->
                 <div id="all-vehicles-section">
-                    <h2 style="margin-bottom: 1.5rem;">Top 20 Launch Vehicles</h2>
-                    <div class="grid grid-3" id="vehicles-grid">
-                        <!-- Populated by JavaScript -->
+                    <div class="section-header" style="margin-bottom: 1.5rem;">
+                        <h2>Fleet Overview</h2>
+                        <p>Click any launcher pill above to enter comparison telemetry mode.</p>
                     </div>
+                    <div class="grid grid-3" id="vehicles-grid"></div>
                 </div>
             </div>
         </section>
@@ -175,7 +170,7 @@
             <div class="footer-grid">
                 <div class="footer-brand">
                     <a href="index.html" class="logo">🚀 SPACE PROGRAM</a>
-                    <p>Advanced analytics and comparison platform for global space missions.</p>
+                    <p>High-precision orbital telemetry platform. Curated metrics from manufacturer specifications and public filings.</p>
                 </div>
                 <div>
                     <h4>Navigation</h4>
@@ -188,25 +183,23 @@
                     </ul>
                 </div>
                 <div>
-                    <h4>Data Sources</h4>
+                    <h4>Telemetry APIs</h4>
                     <ul class="footer-links">
-                        <li><a href="https://api.nasa.gov" target="_blank" rel="noopener">NASA APIs</a></li>
-                        <li><a href="https://thespacedevs.com" target="_blank" rel="noopener">TheSpaceDevs</a></li>
-                        <li><a href="https://github.com/r-spacex/SpaceX-API" target="_blank" rel="noopener">SpaceX
-                                API</a></li>
+                        <li><a href="https://ll.thespacedevs.com" target="_blank" rel="noopener noreferrer">Launch Library 2</a></li>
+                        <li><a href="https://api.nasa.gov" target="_blank" rel="noopener noreferrer">NASA APIs</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4>About</h4>
+                    <h4>Project</h4>
                     <ul class="footer-links">
-                        <li><a href="privacy.html">Privacy Policy</a></li>
-                        <li><a href="terms.html">Terms of Service</a></li>
+                        <li><a href="privacy.html">Privacy</a></li>
+                        <li><a href="terms.html">Terms</a></li>
                         <li><a href="contact.html">Contact</a></li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Space Program. All rights reserved.</p>
+                <p>&copy; 2026 Léonel Sandjong. MIT License.</p>
             </div>
         </div>
     </footer>
@@ -224,28 +217,30 @@
             initVehicleSelector();
             renderAllVehicles();
             initMetricSelector();
+
+            document.getElementById('clear-selection').addEventListener('click', () => {
+                selectedVehicles = [];
+                document.querySelectorAll('.vehicle-btn').forEach(btn => {
+                    btn.classList.remove('selected');
+                    btn.setAttribute('aria-pressed', 'false');
+                });
+                updateComparison();
+            });
         });
 
         function initVehicleSelector() {
             const container = document.getElementById('vehicle-selector');
+            container.innerHTML = '';
 
-            container.innerHTML = vehicles.map(vehicle => `
-                <button 
-                    class="vehicle-btn" 
-                    data-id="${vehicle.id}"
-                    aria-pressed="false"
-                    aria-label="Select ${vehicle.name} by ${vehicle.provider}"
-                >
-                    ${vehicle.name}
-                </button>
-            `).join('');
-
-            container.addEventListener('click', (e) => {
-                const btn = e.target.closest('.vehicle-btn');
-                if (!btn) return;
-
-                const vehicleId = btn.dataset.id;
-                toggleVehicleSelection(vehicleId, btn);
+            vehicles.forEach(vehicle => {
+                const btn = document.createElement('button');
+                btn.className = 'vehicle-btn';
+                btn.dataset.id = vehicle.id;
+                btn.setAttribute('aria-pressed', 'false');
+                btn.setAttribute('aria-label', `Select ${vehicle.name} by ${vehicle.provider}`);
+                btn.textContent = vehicle.name;
+                btn.addEventListener('click', () => toggleVehicleSelection(vehicle.id, btn));
+                container.appendChild(btn);
             });
         }
 
@@ -253,19 +248,16 @@
             const index = selectedVehicles.indexOf(vehicleId);
 
             if (index > -1) {
-                // Deselect
                 selectedVehicles.splice(index, 1);
                 button.classList.remove('selected');
                 button.setAttribute('aria-pressed', 'false');
             } else if (selectedVehicles.length < MAX_SELECTION) {
-                // Select
                 selectedVehicles.push(vehicleId);
                 button.classList.add('selected');
                 button.setAttribute('aria-pressed', 'true');
             } else {
-                // Max reached - show feedback
-                button.style.animation = 'shake 0.3s';
-                setTimeout(() => button.style.animation = '', 300);
+                button.style.transform = 'scale(0.95)';
+                setTimeout(() => button.style.transform = '', 150);
                 return;
             }
 
@@ -275,6 +267,8 @@
         function updateComparison() {
             const comparisonSection = document.getElementById('comparison-section');
             const allVehiclesSection = document.getElementById('all-vehicles-section');
+            const countEl = document.getElementById('selection-count');
+            if (countEl) countEl.textContent = selectedVehicles.length;
 
             if (selectedVehicles.length > 0) {
                 comparisonSection.classList.remove('hidden');
@@ -283,11 +277,8 @@
                 const selected = selectedVehicles.map(id => vehicles.find(v => v.id === id));
                 const metric = document.getElementById('metric-select').value;
 
-                // Update charts
                 createDirectComparisonChart('chart-direct', selected, metric);
                 createVehicleComparisonRadar('chart-radar', selected);
-
-                // Update table
                 updateSpecsTable(selected);
             } else {
                 comparisonSection.classList.add('hidden');
@@ -308,12 +299,16 @@
         function updateSpecsTable(selected) {
             const headerRow = document.getElementById('table-header');
             const tbody = document.getElementById('table-body');
+            headerRow.innerHTML = '<th>Specification</th>';
+            tbody.innerHTML = '';
 
-            // Update header
-            headerRow.innerHTML = '<th>Specification</th>' +
-                selected.map(v => `<th style="color: var(--accent-cyan);">${v.name}</th>`).join('');
+            selected.forEach(v => {
+                const th = document.createElement('th');
+                th.style.color = 'var(--accent-cyan)';
+                th.textContent = v.name;
+                headerRow.appendChild(th);
+            });
 
-            // Define specifications to show
             const specs = [
                 { key: 'provider', label: 'Provider' },
                 { key: 'country', label: 'Country' },
@@ -332,7 +327,6 @@
                 { key: 'firstFlight', label: 'First Flight', format: v => v ? new Date(v).getFullYear() : 'TBD' }
             ];
 
-            // Find best values for highlighting
             const bestValues = {};
             specs.forEach(spec => {
                 if (['successRate', 'payloadLEO', 'payloadGTO', 'thrust', 'totalLaunches'].includes(spec.key)) {
@@ -343,33 +337,31 @@
                 }
             });
 
-            tbody.innerHTML = specs.map(spec => {
-                const cells = selected.map(v => {
-                    const value = v[spec.key];
-                    const formatted = spec.format ? spec.format(value) : value;
-                    const isBest = bestValues[spec.key] !== undefined && value === bestValues[spec.key];
-                    return `<td class="${isBest ? 'highlight' : ''}">${formatted}</td>`;
-                }).join('');
+            specs.forEach(spec => {
+                const tr = document.createElement('tr');
+                const tdLabel = document.createElement('td');
+                tdLabel.textContent = spec.label;
+                tr.appendChild(tdLabel);
 
-                return `<tr><td>${spec.label}</td>${cells}</tr>`;
-            }).join('');
+                selected.forEach(v => {
+                    const td = document.createElement('td');
+                    const value = v[spec.key];
+                    td.textContent = spec.format ? spec.format(value) : (value ?? 'N/A');
+                    if (bestValues[spec.key] !== undefined && value === bestValues[spec.key]) {
+                        td.className = 'highlight';
+                    }
+                    tr.appendChild(td);
+                });
+
+                tbody.appendChild(tr);
+            });
         }
 
         function renderAllVehicles() {
             const container = document.getElementById('vehicles-grid');
-            container.innerHTML = vehicles.map(renderVehicleCard).join('');
+            container.innerHTML = '';
+            vehicles.forEach(v => container.appendChild(renderVehicleCardSafe(v)));
         }
-
-        // Add shake animation for max selection feedback
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes shake {
-                0%, 100% { transform: translateX(0); }
-                25% { transform: translateX(-5px); }
-                75% { transform: translateX(5px); }
-            }
-        `;
-        document.head.appendChild(style);
     </script>
 </body>
 

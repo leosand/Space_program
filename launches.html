@@ -6,72 +6,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Space Launches Database - Track Rocket Launches Worldwide | Space Program</title>
+    <title>Space Launch Manifest & Telemetry Database | Space Program</title>
     <meta name="description"
-        content="Browse comprehensive database of space launches from SpaceX, NASA, ESA, Roscosmos, and more. Filter by status, provider, and date. Real-time launch tracking.">
+        content="Track past, present, and scheduled space missions worldwide. Filter by provider, status, and search orbital payloads.">
     <meta name="keywords"
-        content="space launches, rocket launches, SpaceX launches, NASA missions, upcoming launches, launch schedule, orbital launches">
-    <meta name="author" content="Space Program">
+        content="space launch schedule, rocket launches, Falcon 9 manifest, Starship launches, NASA Artemis, orbital missions">
+    <meta name="author" content="Léonel Sandjong">
     <meta name="robots" content="index, follow">
 
-    <link rel="canonical" href="https://spaceprogram.com/launches">
+    <link rel="canonical" href="https://leosand.github.io/Space_program/launches.html">
 
-    <!-- Open Graph -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://spaceprogram.com/launches">
-    <meta property="og:title" content="Space Launches Database - Track Rocket Launches Worldwide">
+    <meta property="og:url" content="https://leosand.github.io/Space_program/launches.html">
+    <meta property="og:title" content="Space Launch Manifest — Space Program">
     <meta property="og:description"
-        content="Browse comprehensive database of space launches from SpaceX, NASA, ESA, and more.">
-    <meta property="og:image" content="https://spaceprogram.com/assets/images/launches-og.jpg">
+        content="Global orbital launch manifest and mission status telemetry.">
+    <meta property="og:image" content="https://leosand.github.io/Space_program/og-image.png">
 
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Space Launches Database - Track Rocket Launches Worldwide">
-    <meta name="twitter:description"
-        content="Browse comprehensive database of space launches from SpaceX, NASA, ESA, and more.">
-
-    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
-
-    <meta name="theme-color" content="#050508">
+    <meta name="theme-color" content="#06070a">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="css/styles.css" rel="stylesheet">
-
-    <!-- Structured Data -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "CollectionPage",
-        "name": "Space Launches Database",
-        "description": "Comprehensive database of past, present and future space launches from agencies worldwide.",
-        "url": "https://spaceprogram.com/launches",
-        "isPartOf": {
-            "@type": "WebSite",
-            "name": "Space Program",
-            "url": "https://spaceprogram.com"
-        },
-        "breadcrumb": {
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-                {
-                    "@type": "ListItem",
-                    "position": 1,
-                    "name": "Home",
-                    "item": "https://spaceprogram.com/"
-                },
-                {
-                    "@type": "ListItem",
-                    "position": 2,
-                    "name": "Launches",
-                    "item": "https://spaceprogram.com/launches"
-                }
-            ]
-        }
-    }
-    </script>
 </head>
 
 <body>
@@ -81,7 +39,8 @@
     <header class="header" role="banner">
         <div class="container">
             <a href="index.html" class="logo" aria-label="Space Program Home">
-                🚀 SPACE PROGRAM
+                <span>🚀 SPACE PROGRAM</span>
+                <span class="logo-telemetry">MANIFEST</span>
             </a>
             <button class="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
                 <span></span>
@@ -101,43 +60,37 @@
     </header>
 
     <main id="main-content" class="pt-header" role="main">
-        <!-- Page Header -->
-        <section class="section" style="padding-bottom: 0;">
+        <section class="section" style="padding-top: 2rem;">
             <div class="container">
-                <div class="section-header" style="text-align: left; margin-bottom: 2rem;">
-                    <h1 class="text-gradient">Mission Control</h1>
-                    <p>Track past and upcoming launches from all major space agencies and private companies worldwide.
-                    </p>
+                <div class="section-header">
+                    <h1><span class="text-gradient">MISSION MANIFEST</span></h1>
+                    <p>Live schedule and mission logs aggregated from Launch Library 2 and primary launch agencies.</p>
                 </div>
 
-                <!-- Stats Row -->
+                <!-- Stats Bar -->
                 <div class="grid grid-4" style="margin-bottom: 2rem;">
                     <div class="card stat-card">
                         <div class="stat-value" id="stat-total">--</div>
-                        <div class="stat-label">Total Missions</div>
+                        <div class="stat-label">Manifest Total</div>
                     </div>
                     <div class="card stat-card purple">
-                        <div class="stat-value" id="stat-upcoming">--</div>
+                        <div class="stat-value" id="stat-upcoming" style="color: var(--accent-purple);">--</div>
                         <div class="stat-label">Upcoming</div>
                     </div>
                     <div class="card stat-card cyan">
-                        <div class="stat-value" id="stat-success">--</div>
-                        <div class="stat-label">Successful</div>
+                        <div class="stat-value" id="stat-success" style="color: var(--status-success);">--</div>
+                        <div class="stat-label">Mission Success</div>
                     </div>
                     <div class="card stat-card pink">
-                        <div class="stat-value" id="stat-failure">--</div>
-                        <div class="stat-label">Failed</div>
+                        <div class="stat-value" id="stat-failure" style="color: var(--status-failure);">--</div>
+                        <div class="stat-label">Anomalies</div>
                     </div>
                 </div>
-            </div>
-        </section>
 
-        <!-- Filters -->
-        <section class="section" style="padding-top: 0;">
-            <div class="container">
+                <!-- Filter Controls -->
                 <div class="filters" role="search" aria-label="Filter launches">
                     <input type="search" id="search-input" class="filter-input"
-                        placeholder="Search missions, rockets, providers..." aria-label="Search launches">
+                        placeholder="Search mission, rocket, provider, or pad…" aria-label="Search launches">
                     <select id="status-filter" class="filter-select" aria-label="Filter by status">
                         <option value="all">All Statuses</option>
                         <option value="success">Successful</option>
@@ -147,14 +100,12 @@
                     </select>
                     <select id="provider-filter" class="filter-select" aria-label="Filter by provider">
                         <option value="all">All Providers</option>
-                        <!-- Populated by JavaScript -->
                     </select>
                     <select id="sort-select" class="filter-select" aria-label="Sort launches">
                         <option value="date-desc">Newest First</option>
                         <option value="date-asc">Oldest First</option>
                         <option value="name-asc">Name (A-Z)</option>
                         <option value="name-desc">Name (Z-A)</option>
-                        <option value="provider-asc">Provider (A-Z)</option>
                     </select>
                 </div>
 
@@ -162,14 +113,13 @@
                 <div class="grid grid-3" id="launches-container" role="feed" aria-label="Space launches">
                     <div class="loading" style="grid-column: 1/-1;">
                         <div class="loading-spinner"></div>
-                        <p>Loading launches from multiple sources...</p>
+                        <p>Aggregating orbital manifests…</p>
                     </div>
                 </div>
 
-                <!-- Load More -->
-                <div class="text-center" style="margin-top: 2rem;">
+                <div class="text-center" style="margin-top: 2rem; display: flex; justify-content: center;">
                     <button id="load-more-btn" class="btn btn-secondary hidden">
-                        Load More Launches
+                        Load More Missions
                     </button>
                 </div>
             </div>
@@ -182,7 +132,7 @@
             <div class="footer-grid">
                 <div class="footer-brand">
                     <a href="index.html" class="logo">🚀 SPACE PROGRAM</a>
-                    <p>Advanced analytics and comparison platform for global space missions.</p>
+                    <p>Global space mission logs and launch schedule aggregator.</p>
                 </div>
                 <div>
                     <h4>Navigation</h4>
@@ -195,25 +145,23 @@
                     </ul>
                 </div>
                 <div>
-                    <h4>Data Sources</h4>
+                    <h4>APIs</h4>
                     <ul class="footer-links">
-                        <li><a href="https://api.nasa.gov" target="_blank" rel="noopener">NASA APIs</a></li>
-                        <li><a href="https://thespacedevs.com" target="_blank" rel="noopener">TheSpaceDevs</a></li>
-                        <li><a href="https://github.com/r-spacex/SpaceX-API" target="_blank" rel="noopener">SpaceX
-                                API</a></li>
+                        <li><a href="https://ll.thespacedevs.com" target="_blank" rel="noopener noreferrer">Launch Library 2</a></li>
+                        <li><a href="https://api.nasa.gov" target="_blank" rel="noopener noreferrer">NASA APIs</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4>About</h4>
+                    <h4>Project</h4>
                     <ul class="footer-links">
-                        <li><a href="privacy.html">Privacy Policy</a></li>
-                        <li><a href="terms.html">Terms of Service</a></li>
+                        <li><a href="privacy.html">Privacy</a></li>
+                        <li><a href="terms.html">Terms</a></li>
                         <li><a href="contact.html">Contact</a></li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Space Program. All rights reserved.</p>
+                <p>&copy; 2026 Léonel Sandjong. MIT License.</p>
             </div>
         </div>
     </footer>
@@ -227,14 +175,13 @@
 
         document.addEventListener('DOMContentLoaded', async () => {
             await loadLaunches();
-            initFiltersCustom();
+            initFilterEvents();
         });
 
         async function loadLaunches() {
             const container = document.getElementById('launches-container');
 
             try {
-                // Load both upcoming and past launches (20 upcoming + 100 past)
                 const [upcoming, past] = await Promise.all([
                     spaceAPI.getUpcomingLaunches(20),
                     spaceAPI.getPastLaunches(100)
@@ -242,35 +189,24 @@
 
                 allLaunches = [...upcoming, ...past];
 
-                // Update stats
-                const stats = {
-                    total: allLaunches.length,
-                    upcoming: upcoming.length,
-                    success: past.filter(l => l.status === 'Success').length,
-                    failure: past.filter(l => l.status === 'Failure').length
-                };
+                document.getElementById('stat-total').textContent = allLaunches.length.toLocaleString();
+                document.getElementById('stat-upcoming').textContent = upcoming.length.toLocaleString();
+                document.getElementById('stat-success').textContent = past.filter(l => l.status === 'Success').length.toLocaleString();
+                document.getElementById('stat-failure').textContent = past.filter(l => l.status === 'Failure').length.toLocaleString();
 
-                animateNumber(document.getElementById('stat-total'), 0, stats.total, 1000);
-                animateNumber(document.getElementById('stat-upcoming'), 0, stats.upcoming, 1000);
-                animateNumber(document.getElementById('stat-success'), 0, stats.success, 1000);
-                animateNumber(document.getElementById('stat-failure'), 0, stats.failure, 1000);
-
-                // Populate provider filter
                 const providers = [...new Set(allLaunches.map(l => l.provider).filter(Boolean))].sort();
                 const providerFilter = document.getElementById('provider-filter');
-                providers.forEach(provider => {
-                    const option = document.createElement('option');
-                    option.value = provider;
-                    option.textContent = provider;
-                    providerFilter.appendChild(option);
+                providers.forEach(p => {
+                    const opt = document.createElement('option');
+                    opt.value = p;
+                    opt.textContent = p;
+                    providerFilter.appendChild(opt);
                 });
 
-                // Initial render
                 renderLaunches(allLaunches);
-
-            } catch (error) {
-                console.error('Failed to load launches:', error);
-                showError(container, 'Failed to load launch data. Please try again later.');
+            } catch (err) {
+                console.error(err);
+                container.innerHTML = '<p class="text-muted" style="grid-column: 1/-1; text-align: center;">Unable to reach launch telemetry APIs.</p>';
             }
         }
 
@@ -279,21 +215,15 @@
             const loadMoreBtn = document.getElementById('load-more-btn');
 
             if (!append) {
+                container.innerHTML = '';
                 displayedCount = 0;
             }
 
-            const toDisplay = launches.slice(displayedCount, displayedCount + BATCH_SIZE);
-            displayedCount += toDisplay.length;
+            const slice = launches.slice(displayedCount, displayedCount + BATCH_SIZE);
+            displayedCount += slice.length;
 
-            const html = toDisplay.map(renderLaunchCard).join('');
+            slice.forEach(l => container.appendChild(renderLaunchCardSafe(l)));
 
-            if (append) {
-                container.insertAdjacentHTML('beforeend', html);
-            } else {
-                container.innerHTML = html;
-            }
-
-            // Show/hide load more button
             if (displayedCount < launches.length) {
                 loadMoreBtn.classList.remove('hidden');
             } else {
@@ -301,94 +231,59 @@
             }
 
             if (launches.length === 0) {
-                container.innerHTML = `
-                    <div class="error-message" style="grid-column: 1/-1;">
-                        <h3>No Launches Found</h3>
-                        <p>Try adjusting your filters or search terms.</p>
-                    </div>
-                `;
+                container.innerHTML = '<p class="text-muted" style="grid-column: 1/-1; text-align: center;">No missions match your active filters.</p>';
             }
         }
 
-        function initFiltersCustom() {
+        function initFilterEvents() {
             const searchInput = document.getElementById('search-input');
             const statusFilter = document.getElementById('status-filter');
             const providerFilter = document.getElementById('provider-filter');
             const sortSelect = document.getElementById('sort-select');
             const loadMoreBtn = document.getElementById('load-more-btn');
 
-            function filterAndSort() {
+            function apply() {
                 let filtered = [...allLaunches];
-                const search = searchInput.value.toLowerCase();
-                const status = statusFilter.value;
-                const provider = providerFilter.value;
-                const [sortBy, sortDir] = sortSelect.value.split('-');
+                const query = searchInput.value.toLowerCase().trim();
+                const st = statusFilter.value.toLowerCase();
+                const pr = providerFilter.value;
+                const [by, dir] = sortSelect.value.split('-');
 
-                // Filter by search
-                if (search) {
+                if (query) {
                     filtered = filtered.filter(l =>
-                        l.name?.toLowerCase().includes(search) ||
-                        l.rocket?.toLowerCase().includes(search) ||
-                        l.provider?.toLowerCase().includes(search) ||
-                        l.location?.toLowerCase().includes(search)
+                        (l.name && l.name.toLowerCase().includes(query)) ||
+                        (l.rocket && l.rocket.toLowerCase().includes(query)) ||
+                        (l.provider && l.provider.toLowerCase().includes(query)) ||
+                        (l.location && l.location.toLowerCase().includes(query))
                     );
                 }
 
-                // Filter by status
-                if (status !== 'all') {
-                    filtered = filtered.filter(l => l.status?.toLowerCase() === status.toLowerCase());
+                if (st !== 'all') {
+                    filtered = filtered.filter(l => (l.status && l.status.toLowerCase() === st));
                 }
 
-                // Filter by provider
-                if (provider !== 'all') {
-                    filtered = filtered.filter(l => l.provider === provider);
+                if (pr !== 'all') {
+                    filtered = filtered.filter(l => l.provider === pr);
                 }
 
-                // Sort
                 filtered.sort((a, b) => {
                     let cmp = 0;
-                    if (sortBy === 'date') {
-                        cmp = new Date(a.net) - new Date(b.net);
-                    } else if (sortBy === 'name') {
-                        cmp = (a.name || '').localeCompare(b.name || '');
-                    } else if (sortBy === 'provider') {
-                        cmp = (a.provider || '').localeCompare(b.provider || '');
-                    }
-                    return sortDir === 'asc' ? cmp : -cmp;
+                    if (by === 'date') cmp = new Date(a.net) - new Date(b.net);
+                    else if (by === 'name') cmp = (a.name || '').localeCompare(b.name || '');
+                    return dir === 'asc' ? cmp : -cmp;
                 });
 
                 renderLaunches(filtered);
             }
 
-            searchInput.addEventListener('input', debounce(filterAndSort, 300));
-            statusFilter.addEventListener('change', filterAndSort);
-            providerFilter.addEventListener('change', filterAndSort);
-            sortSelect.addEventListener('change', filterAndSort);
+            searchInput.addEventListener('input', apply);
+            statusFilter.addEventListener('change', apply);
+            providerFilter.addEventListener('change', apply);
+            sortSelect.addEventListener('change', apply);
 
             loadMoreBtn.addEventListener('click', () => {
                 renderLaunches(allLaunches, true);
             });
-        }
-
-        function debounce(func, wait) {
-            let timeout;
-            return function (...args) {
-                clearTimeout(timeout);
-                timeout = setTimeout(() => func.apply(this, args), wait);
-            };
-        }
-
-        function animateNumber(element, start, end, duration) {
-            if (!element) return;
-            const startTime = performance.now();
-            function update(currentTime) {
-                const elapsed = currentTime - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                const current = Math.floor(start + (end - start) * progress);
-                element.textContent = current.toLocaleString();
-                if (progress < 1) requestAnimationFrame(update);
-            }
-            requestAnimationFrame(update);
         }
     </script>
 </body>
