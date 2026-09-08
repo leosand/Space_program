@@ -6,75 +6,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>Space News - Latest Updates from NASA, SpaceX, ESA & More | Space Program</title>
+    <title>Space Dispatches & Exploration Intelligence | Space Program</title>
     <meta name="description"
-        content="Stay updated with the latest space news from 15+ sources including NASA, SpaceX, ESA, Universe Today, and Space.com. Breaking news, mission updates, and industry insights.">
+        content="Curated space dispatches aggregated from NASA, ESA, SpaceX, and Spaceflight News API (SNAPI v4). Live coverage of orbital missions and science.">
     <meta name="keywords"
-        content="space news, NASA news, SpaceX news, ESA news, rocket launches, space industry, astronomy news, space exploration updates">
-    <meta name="author" content="Space Program">
+        content="space news, NASA dispatches, SpaceX updates, ESA missions, orbital science, rocket launches">
+    <meta name="author" content="Léonel Sandjong">
     <meta name="robots" content="index, follow">
 
-    <link rel="canonical" href="https://spaceprogram.com/news">
+    <link rel="canonical" href="https://leosand.github.io/Space_program/news.html">
 
-    <!-- Open Graph -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://spaceprogram.com/news">
-    <meta property="og:title" content="Space News - Latest Updates from 15+ Sources">
-    <meta property="og:description" content="Stay updated with the latest space news from NASA, SpaceX, ESA, and more.">
-    <meta property="og:image" content="https://spaceprogram.com/assets/images/news-og.jpg">
+    <meta property="og:url" content="https://leosand.github.io/Space_program/news.html">
+    <meta property="og:title" content="Space Dispatches — Space Program">
+    <meta property="og:description"
+        content="Curated space dispatches aggregated from NASA, ESA, SpaceX, and primary space news sources.">
+    <meta property="og:image" content="https://leosand.github.io/Space_program/og-image.png">
 
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Space News - Latest Updates from 15+ Sources">
-
-    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
-
-    <!-- RSS Feed Discovery -->
-    <link rel="alternate" type="application/rss+xml" title="Space Program News Feed" href="/feed.xml">
-
-    <meta name="theme-color" content="#050508">
+    <meta name="theme-color" content="#06070a">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="css/styles.css" rel="stylesheet">
-
-    <!-- Structured Data -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "CollectionPage",
-        "name": "Space News",
-        "description": "Aggregated space news from 15+ trusted sources worldwide.",
-        "url": "https://spaceprogram.com/news",
-        "isPartOf": {
-            "@type": "WebSite",
-            "name": "Space Program"
-        },
-        "about": {
-            "@type": "Thing",
-            "name": "Space Exploration News"
-        },
-        "breadcrumb": {
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-                {
-                    "@type": "ListItem",
-                    "position": 1,
-                    "name": "Home",
-                    "item": "https://spaceprogram.com/"
-                },
-                {
-                    "@type": "ListItem",
-                    "position": 2,
-                    "name": "News",
-                    "item": "https://spaceprogram.com/news"
-                }
-            ]
-        }
-    }
-    </script>
 </head>
 
 <body>
@@ -84,7 +39,8 @@
     <header class="header" role="banner">
         <div class="container">
             <a href="index.html" class="logo" aria-label="Space Program Home">
-                🚀 SPACE PROGRAM
+                <span>🚀 SPACE PROGRAM</span>
+                <span class="logo-telemetry">DISPATCHES</span>
             </a>
             <button class="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
                 <span></span>
@@ -104,63 +60,42 @@
     </header>
 
     <main id="main-content" class="pt-header" role="main">
-        <!-- Page Header -->
-        <section class="news-hero section" style="padding-bottom: 0;">
+        <section class="section" style="padding-top: 2rem;">
             <div class="container">
-                <div class="section-header" style="text-align: left; margin-bottom: 2rem;">
-                    <h1 class="text-gradient">Space News</h1>
-                    <p>Latest updates aggregated from 15+ trusted sources including NASA, SpaceX, ESA, and leading space
-                        publications.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Source Tabs -->
-        <section class="section" style="padding-top: 0;">
-            <div class="container">
-                <div class="news-source-tabs" role="tablist" aria-label="Filter news by source">
-                    <button class="source-tab active" data-source="all" role="tab" aria-selected="true">
-                        All Sources
-                    </button>
-                    <button class="source-tab" data-source="api" role="tab" aria-selected="false">
-                        🔌 Space News API
-                    </button>
-                    <button class="source-tab" data-source="nasa" role="tab" aria-selected="false">
-                        🚀 NASA
-                    </button>
-                    <button class="source-tab" data-source="esa" role="tab" aria-selected="false">
-                        🌍 ESA
-                    </button>
-                    <button class="source-tab" data-source="spacex" role="tab" aria-selected="false">
-                        🛰️ SpaceX
-                    </button>
-                    <button class="source-tab" data-source="rss" role="tab" aria-selected="false">
-                        📡 RSS Feeds
-                    </button>
+                <div class="section-header">
+                    <h1><span class="text-gradient">SPACE DISPATCHES</span></h1>
+                    <p>Live intelligence feed syndicated from Spaceflight News API (SNAPI v4) and leading orbital exploration sources.</p>
                 </div>
 
-                <!-- Featured Article (NASA APOD) -->
-                <div id="featured-container" class="hidden" style="margin-bottom: 2rem;">
-                    <h2 style="margin-bottom: 1rem;">NASA Astronomy Picture of the Day</h2>
-                    <article class="card" id="apod-card" itemscope itemtype="https://schema.org/ImageObject">
-                        <div class="loading">
-                            <div class="loading-spinner"></div>
-                        </div>
-                    </article>
+                <!-- Source Tabs Filter -->
+                <div class="vehicle-selector" role="tablist" aria-label="Filter dispatches by source" style="margin-bottom: 2rem;">
+                    <button class="vehicle-btn selected" data-source="all" role="tab" aria-selected="true">All Dispatches</button>
+                    <button class="vehicle-btn" data-source="api" role="tab" aria-selected="false">🔌 SNAPI v4</button>
+                    <button class="vehicle-btn" data-source="nasa" role="tab" aria-selected="false">🚀 NASA / JPL</button>
+                    <button class="vehicle-btn" data-source="esa" role="tab" aria-selected="false">🌍 ESA</button>
+                    <button class="vehicle-btn" data-source="spacex" role="tab" aria-selected="false">🛰️ SpaceX</button>
+                    <button class="vehicle-btn" data-source="rss" role="tab" aria-selected="false">📡 Public RSS</button>
                 </div>
 
-                <!-- News Grid -->
-                <div class="grid grid-3" id="news-container" role="feed" aria-label="News articles">
+                <!-- Featured APOD Card (safe DOM populated) -->
+                <div id="apod-section" class="hidden" style="margin-bottom: 2.5rem;">
+                    <div class="section-header" style="margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.25rem;">NASA Astronomy Picture of the Day</h2>
+                    </div>
+                    <div class="card" id="apod-card" style="padding: 1.6rem;"></div>
+                </div>
+
+                <!-- Dispatches Grid -->
+                <div class="grid grid-3" id="news-container" role="feed" aria-label="Space news articles">
                     <div class="loading" style="grid-column: 1/-1;">
                         <div class="loading-spinner"></div>
-                        <p>Loading news from multiple sources...</p>
+                        <p>Aggregating space intelligence feeds…</p>
                     </div>
                 </div>
 
-                <!-- Load More -->
-                <div class="text-center" style="margin-top: 2rem;">
+                <div class="text-center" style="margin-top: 2.5rem; display: flex; justify-content: center;">
                     <button id="load-more-btn" class="btn btn-secondary hidden">
-                        Load More News
+                        Load More Dispatches
                     </button>
                 </div>
             </div>
@@ -173,7 +108,7 @@
             <div class="footer-grid">
                 <div class="footer-brand">
                     <a href="index.html" class="logo">🚀 SPACE PROGRAM</a>
-                    <p>Advanced analytics and comparison platform for global space missions.</p>
+                    <p>Syndicated space dispatches and exploration intelligence.</p>
                 </div>
                 <div>
                     <h4>Navigation</h4>
@@ -186,24 +121,23 @@
                     </ul>
                 </div>
                 <div>
-                    <h4>Data Sources</h4>
+                    <h4>Sources</h4>
                     <ul class="footer-links">
-                        <li><a href="https://api.nasa.gov" target="_blank" rel="noopener">NASA APIs</a></li>
-                        <li><a href="https://thespacedevs.com" target="_blank" rel="noopener">TheSpaceDevs</a></li>
-                        <li><a href="https://spaceflightnewsapi.net" target="_blank" rel="noopener">SNAPI</a></li>
+                        <li><a href="https://spaceflightnewsapi.net" target="_blank" rel="noopener noreferrer">SNAPI v4</a></li>
+                        <li><a href="https://api.nasa.gov" target="_blank" rel="noopener noreferrer">NASA APOD API</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4>About</h4>
+                    <h4>Project</h4>
                     <ul class="footer-links">
-                        <li><a href="privacy.html">Privacy Policy</a></li>
-                        <li><a href="terms.html">Terms of Service</a></li>
+                        <li><a href="privacy.html">Privacy</a></li>
+                        <li><a href="terms.html">Terms</a></li>
                         <li><a href="contact.html">Contact</a></li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Space Program. All rights reserved.</p>
+                <p>&copy; 2026 Léonel Sandjong. MIT License.</p>
             </div>
         </div>
     </footer>
@@ -217,149 +151,149 @@
         const BATCH_SIZE = 12;
 
         document.addEventListener('DOMContentLoaded', async () => {
-            await loadNews();
+            await Promise.all([loadNews(), loadAPOD()]);
             initSourceTabs();
-            loadAPOD();
         });
 
         async function loadNews() {
             const container = document.getElementById('news-container');
-
             try {
                 allNews = await spaceAPI.getAggregatedNews(50);
-                renderNews(getFilteredNews());
-            } catch (error) {
-                console.error('Failed to load news:', error);
-                showError(container, 'Failed to load news. Please try again later.');
+                renderFilteredNews();
+            } catch (err) {
+                console.error(err);
+                container.innerHTML = '<p class="text-muted" style="grid-column: 1/-1; text-align: center;">Unable to sync space intelligence feeds.</p>';
             }
         }
 
-        function getFilteredNews() {
+        function getFiltered() {
             if (currentFilter === 'all') return allNews;
             if (currentFilter === 'api') return allNews.filter(n => n.sourceType === 'api');
             if (currentFilter === 'rss') return allNews.filter(n => n.sourceType === 'rss');
-            if (currentFilter === 'nasa') return allNews.filter(n =>
-                n.source?.toLowerCase().includes('nasa') || n.source?.toLowerCase().includes('jpl')
-            );
-            if (currentFilter === 'esa') return allNews.filter(n =>
-                n.source?.toLowerCase().includes('esa')
-            );
-            if (currentFilter === 'spacex') return allNews.filter(n =>
-                n.source?.toLowerCase().includes('spacex') ||
-                n.title?.toLowerCase().includes('spacex')
-            );
+            if (currentFilter === 'nasa') return allNews.filter(n => (n.source && /nasa|jpl/i.test(n.source)));
+            if (currentFilter === 'esa') return allNews.filter(n => (n.source && /esa/i.test(n.source)));
+            if (currentFilter === 'spacex') return allNews.filter(n => ((n.source && /spacex/i.test(n.source)) || (n.title && /spacex/i.test(n.title))));
             return allNews;
         }
 
-        function renderNews(news, append = false) {
+        function renderFilteredNews(append = false) {
             const container = document.getElementById('news-container');
             const loadMoreBtn = document.getElementById('load-more-btn');
+            const filtered = getFiltered();
 
             if (!append) {
+                container.innerHTML = '';
                 displayedCount = 0;
             }
 
-            const toDisplay = news.slice(displayedCount, displayedCount + BATCH_SIZE);
-            displayedCount += toDisplay.length;
+            const slice = filtered.slice(displayedCount, displayedCount + BATCH_SIZE);
+            displayedCount += slice.length;
 
-            const html = toDisplay.map(renderNewsCard).join('');
+            slice.forEach(n => container.appendChild(renderNewsCardSafe(n)));
 
-            if (append) {
-                container.insertAdjacentHTML('beforeend', html);
-            } else {
-                container.innerHTML = html || `
-                    <div class="error-message" style="grid-column: 1/-1;">
-                        <h3>No News Found</h3>
-                        <p>No articles found for this filter. Try selecting a different source.</p>
-                    </div>
-                `;
-            }
-
-            // Show/hide load more
-            if (displayedCount < news.length) {
+            if (displayedCount < filtered.length) {
                 loadMoreBtn.classList.remove('hidden');
             } else {
                 loadMoreBtn.classList.add('hidden');
             }
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<p class="text-muted" style="grid-column: 1/-1; text-align: center;">No dispatches available under this filter.</p>';
+            }
         }
 
         function initSourceTabs() {
-            const tabs = document.querySelectorAll('.source-tab');
+            const tabs = document.querySelectorAll('.vehicle-btn[data-source]');
             const loadMoreBtn = document.getElementById('load-more-btn');
 
             tabs.forEach(tab => {
                 tab.addEventListener('click', () => {
                     tabs.forEach(t => {
-                        t.classList.remove('active');
+                        t.classList.remove('selected');
                         t.setAttribute('aria-selected', 'false');
                     });
-                    tab.classList.add('active');
+                    tab.classList.add('selected');
                     tab.setAttribute('aria-selected', 'true');
-
                     currentFilter = tab.dataset.source;
-                    renderNews(getFilteredNews());
+                    renderFilteredNews();
                 });
             });
 
             loadMoreBtn.addEventListener('click', () => {
-                renderNews(getFilteredNews(), true);
+                renderFilteredNews(true);
             });
         }
 
         async function loadAPOD() {
-            const container = document.getElementById('featured-container');
+            const section = document.getElementById('apod-section');
             const card = document.getElementById('apod-card');
-
             try {
                 const apod = await spaceAPI.getNasaApod();
+                if (apod && apod.media_type === 'image' && apod.url) {
+                    section.classList.remove('hidden');
+                    card.innerHTML = '';
 
-                if (apod && apod.media_type === 'image') {
-                    container.classList.remove('hidden');
-                    card.innerHTML = `
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center;">
-                            <img 
-                                src="${apod.url}" 
-                                alt="${apod.title}"
-                                style="width: 100%; border-radius: var(--radius-lg); max-height: 400px; object-fit: cover;"
-                                loading="lazy"
-                                itemprop="contentUrl"
-                            >
-                            <div>
-                                <span class="card-badge" style="margin-bottom: 1rem; display: inline-block;">NASA APOD</span>
-                                <h3 style="margin-bottom: 1rem;" itemprop="name">${apod.title}</h3>
-                                <p style="font-size: 0.9375rem; margin-bottom: 1rem;" itemprop="description">
-                                    ${apod.explanation.substring(0, 300)}...
-                                </p>
-                                <div style="display: flex; justify-content: space-between; align-items: center;">
-                                    <span style="color: var(--text-muted); font-size: 0.875rem;">
-                                        📅 ${apod.date}
-                                    </span>
-                                    <a href="${apod.hdurl || apod.url}" target="_blank" rel="noopener" class="read-more">
-                                        View Full Image
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M5 12h14M12 5l7 7-7 7"/>
-                                        </svg>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    `;
+                    const wrap = document.createElement('div');
+                    wrap.style.display = 'grid';
+                    wrap.style.gridTemplateColumns = 'repeat(auto-fit, minmax(280px, 1fr))';
+                    wrap.style.gap = '1.75rem';
+                    wrap.style.alignItems = 'center';
+
+                    const safeUrl = sanitizeUrl(apod.url);
+                    if (safeUrl) {
+                        const img = document.createElement('img');
+                        img.src = safeUrl;
+                        img.alt = apod.title || 'NASA APOD';
+                        img.loading = 'lazy';
+                        img.style.width = '100%';
+                        img.style.maxHeight = '360px';
+                        img.style.objectFit = 'cover';
+                        img.style.borderRadius = 'var(--radius-md)';
+                        img.style.border = '1px solid var(--border-subtle)';
+                        wrap.appendChild(img);
+                    }
+
+                    const body = document.createElement('div');
+
+                    const badge = document.createElement('span');
+                    badge.className = 'card-badge go';
+                    badge.textContent = `NASA APOD · ${apod.date || 'Today'}`;
+                    badge.style.marginBottom = '0.75rem';
+                    badge.style.display = 'inline-block';
+                    body.appendChild(badge);
+
+                    const title = document.createElement('h3');
+                    title.style.fontSize = '1.25rem';
+                    title.style.marginBottom = '0.75rem';
+                    title.textContent = apod.title || 'Astronomy Picture of the Day';
+                    body.appendChild(title);
+
+                    const text = document.createElement('p');
+                    text.style.fontSize = '0.88rem';
+                    text.style.color = 'var(--text-muted)';
+                    text.style.lineHeight = '1.6';
+                    text.style.marginBottom = '1rem';
+                    text.textContent = (apod.explanation || '').slice(0, 320) + '…';
+                    body.appendChild(text);
+
+                    const safeHd = sanitizeUrl(apod.hdurl || apod.url);
+                    if (safeHd) {
+                        const link = document.createElement('a');
+                        link.className = 'read-more';
+                        link.href = safeHd;
+                        link.target = '_blank';
+                        link.rel = 'noopener noreferrer';
+                        link.textContent = 'View High-Res Satellite Frame →';
+                        body.appendChild(link);
+                    }
+
+                    wrap.appendChild(body);
+                    card.appendChild(wrap);
                 }
-            } catch (error) {
-                console.error('Failed to load APOD:', error);
+            } catch (err) {
+                console.error('APOD loading error:', err);
             }
         }
-
-        // Make APOD responsive
-        const style = document.createElement('style');
-        style.textContent = `
-            @media (max-width: 768px) {
-                #apod-card > div {
-                    grid-template-columns: 1fr !important;
-                }
-            }
-        `;
-        document.head.appendChild(style);
     </script>
 </body>
 
