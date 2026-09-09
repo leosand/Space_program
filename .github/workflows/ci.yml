@@ -24,4 +24,4 @@ jobs:
         run: htmlhint *.html
 
       - name: Lint JavaScript Files
-        run: npx --yes eslint@8 js/*.js --no-eslintrc --env browser,es2021 --rule 'no-undef: off'
+        run: "npx --yes eslint@8 js/*.js --no-eslintrc --env browser,es2021 --rule 'no-undef: off'"
