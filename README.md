@@ -201,7 +201,6 @@ Ce projet est distribue sous [licence MIT](LICENSE).
 ## Contact
 
 - Mainteneur : [Leonel Sandjong](https://github.com/leosand)
-- Courriel : [contact@example.com](mailto:contact@example.com)
 - Problemes et demandes : [GitHub Issues](https://github.com/leosand/Space_program/issues)
 
 ---
