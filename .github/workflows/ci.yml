@@ -1,6 +1,6 @@
 name: CI
 
-on:
+'on':
   push:
     branches: [master, feat/*]
   pull_request:
@@ -24,4 +24,4 @@ jobs:
         run: htmlhint *.html
 
       - name: Lint JavaScript Files
-        run: npx eslint js/*.js --no-eslintrc --env browser,es2021 --rule 'no-undef: off' || true
+        run: npx --yes eslint@8 js/*.js --no-eslintrc --env browser,es2021 --rule 'no-undef: off'
