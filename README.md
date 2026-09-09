@@ -90,7 +90,7 @@ En cas d'echec reseau, les pages de lancements utilisent des donnees d'archive e
 ```text
 Space_program/
 ├── index.html              # Tableau de bord
-├── launches.html           # Manifeste orbital, filtres et export CSV
+├── launches.html           # Manifeste orbital : sections par provider, filtres et export CSV
 ├── launch.html             # Vue detaillee d'une mission
 ├── statistics.html         # Indicateurs et graphiques
 ├── compare.html            # Comparateur de lanceurs
@@ -108,6 +108,8 @@ Space_program/
 │   ├── export.js           # Generation CSV cote client
 │   ├── notifications.js    # Notifications navigateur
 │   └── toast.js            # Messages non bloquants
+├── docs/
+│   └── DEPLOYMENT.md      # Deploiement FTP afroconstellation.com (cache, V&V)
 ├── .github/workflows/ci.yml # Verifications CI
 ├── CONTRIBUTING.md
 ├── SECURITY.md
@@ -178,6 +180,14 @@ Les contributions sont les bienvenues. Consultez [CONTRIBUTING.md](CONTRIBUTING.
 - Le site ne comporte aucun outil publicitaire, cookie de suivi ou compte utilisateur.
 
 Pour signaler une vulnerabilite, consultez [SECURITY.md](SECURITY.md). Pour le detail des pratiques de donnees, consultez [privacy.html](privacy.html).
+
+## Deploiement
+
+Le site est deploye sur https://afroconstellation.com (Hostinger, FTP). La
+procedure complete (jeu de fichiers, .htaccess, cache-bust `?v=`, V&V post-
+deploiement, notes sur le quota de l'API Launch Library 2) est documentee dans
+[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md). Les metas canonical / OpenGraph /
+JSON-LD ciblent ce domaine de production.
 
 ## Feuille de route
 

@@ -7,6 +7,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 :root {
+    color-scheme: dark;
     --bg-base: #06070a;
     --bg-surface: rgba(14, 17, 24, 0.72);
     --bg-elevated: #161b26;
@@ -258,6 +259,11 @@ body::before {
     box-shadow: 0 0 10px var(--status-warning);
 }
 
+.pulse-dot.offline {
+    background: var(--status-warning);
+    box-shadow: 0 0 10px var(--status-warning);
+}
+
 /* Sections */
 .pt-header {
     padding-top: 108px;
@@ -432,6 +438,18 @@ body::before {
     border-color: rgba(34, 211, 238, 0.3);
 }
 
+.card-badge.danger {
+    background: var(--status-failure-dim);
+    color: var(--status-failure);
+    border-color: rgba(248, 113, 113, 0.3);
+}
+
+.card-badge.warning {
+    background: var(--status-warning-dim);
+    color: var(--status-warning);
+    border-color: rgba(251, 191, 36, 0.3);
+}
+
 .launch-info {
     display: flex;
     flex-direction: column;
@@ -459,6 +477,28 @@ body::before {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+/* Card pieces shared by JS-rendered launch/vehicle cards */
+.card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.6rem;
+    margin-bottom: 0.7rem;
+}
+
+.card-title {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 600;
+    line-height: 1.35;
+    margin-bottom: 0.35rem;
+    color: var(--text-primary);
+}
+
+.text-muted {
+    color: var(--text-muted);
 }
 
 /* Stale Data Warning Banner */
@@ -543,6 +583,16 @@ body::before {
     outline: none;
     border-color: var(--accent-cyan);
     box-shadow: 0 0 0 3px var(--accent-cyan-dim);
+}
+
+select {
+    background: var(--bg-elevated);
+    color: var(--text-primary);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 0.6rem 0.9rem;
+    font-family: var(--font-body);
+    font-size: 0.86rem;
 }
 
 /* Vehicle Selector Pills */
@@ -749,6 +799,38 @@ body::before {
     border-top: 1px solid var(--border-subtle);
     padding-top: 1.5rem;
     font-size: 0.78rem;
+    color: var(--text-muted);
+}
+
+.footer:not(:has(.footer-grid)) {
+    padding-top: 1.75rem;
+}
+
+/* Launches : sections par provider (onglet Upcoming) */
+.provider-section {
+    margin-bottom: 2.5rem;
+}
+
+.provider-heading {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    margin-bottom: 0.15rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.provider-count {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: none;
     color: var(--text-muted);
 }
 

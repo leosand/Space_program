@@ -240,35 +240,74 @@ const LAUNCH_VEHICLES = [
 class SpaceAPI {
     constructor() {
         this.cache = new Map();
-        this.cacheTimeout = 5 * 60 * 1000;
+        this.cacheTimeout = 10 * 60 * 1000;
     }
 
     getCached(key) {
-        const cached = this.cache.get(key);
-        if (cached && Date.now() - cached.timestamp < this.cacheTimeout) {
-            return cached.data;
-        }
+        const mem = this.cache.get(key);
+        if (mem && Date.now() - mem.timestamp < this.cacheTimeout) return mem.data;
+        try {
+            const raw = localStorage.getItem('spc_' + key);
+            if (raw) {
+                const stored = JSON.parse(raw);
+                if (stored && Date.now() - stored.timestamp < this.cacheTimeout) {
+                    this.cache.set(key, stored);
+                    return stored.data;
+                }
+                localStorage.removeItem('spc_' + key);
+            }
+        } catch (e) { /* stockage indisponible : cache memoire seul */ }
         return null;
     }
 
     setCache(key, data) {
-        this.cache.set(key, { data, timestamp: Date.now() });
+        const entry = { data, timestamp: Date.now() };
+        this.cache.set(key, entry);
+        try { localStorage.setItem('spc_' + key, JSON.stringify(entry)); } catch (e) { /* ignore */ }
     }
 
-    async fetchJSON(url, timeoutMs = 8000) {
+    // Si l'API est saturee (429), on suspend les appels quelques minutes
+    // pour la laisser respirer au lieu de marteler chaque page.
+    fallbackHeld() {
+        try { const f = localStorage.getItem('spc_hold'); return Boolean(f) && Number(f) > Date.now(); }
+        catch (e) { return false; }
+    }
+
+    holdFallback(ms = 4 * 60 * 1000) {
+        try { localStorage.setItem('spc_hold', String(Date.now() + ms)); } catch (e) { /* ignore */ }
+    }
+
+    releaseHold() {
+        try { localStorage.removeItem('spc_hold'); } catch (e) { /* ignore */ }
+    }
+
+    async fetchOnce(url, timeoutMs) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), timeoutMs);
         try {
-            const controller = new AbortController();
-            const timer = setTimeout(() => controller.abort(), timeoutMs);
             const response = await fetch(url, {
                 signal: controller.signal,
                 headers: { 'Accept': 'application/json' }
             });
-            clearTimeout(timer);
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             return await response.json();
+        } finally {
+            clearTimeout(timer);
+        }
+    }
+
+    async fetchJSON(url, timeoutMs = 20000) {
+        try {
+            return await this.fetchOnce(url, timeoutMs);
         } catch (error) {
-            console.warn(`Telemetry fetch error for ${url}:`, error.message);
-            return null;
+            // Quota LL2 (429) ou erreur transitoire : un seul retry apres 2.5 s
+            try {
+                await new Promise(resolve => setTimeout(resolve, 2500));
+                return await this.fetchOnce(url, timeoutMs);
+            } catch (retryError) {
+                console.warn(`Telemetry fetch error for ${url}:`, retryError.message);
+                return null;
+            }
         }
     }
 
@@ -309,14 +348,15 @@ class SpaceAPI {
     }
 
     async getUpcomingLaunches(limit = 20) {
-        const cacheKey = `upcoming_${limit}`;
-        const cached = this.getCached(cacheKey);
-        if (cached) return cached;
+        const all = this.getCached('upcoming_all');
+        if (all) return all.slice(0, limit);
+        if (this.fallbackHeld()) return this.getFallbackUpcomingLaunches();
 
-        const url = `${DATA_SOURCES.launchLibrary.url}/launch/upcoming/?limit=${limit}&mode=detailed`;
+        const url = `${DATA_SOURCES.launchLibrary.url}/launch/upcoming/?limit=50&mode=detailed`;
         const data = await this.fetchJSON(url);
 
-        if (data && Array.isArray(data.results) && data.results.length > 0) {
+        if (data && Array.isArray(data.results)) {
+            // Reponse API valide (meme vide) => donnees live, jamais de fausses entrees
             const launches = data.results.map(launch => ({
                 id: launch.id,
                 name: launch.name,
@@ -331,22 +371,24 @@ class SpaceAPI {
                 location: launch.pad?.location?.name || 'Launch Site',
                 isFallback: false
             }));
-            this.setCache(cacheKey, launches);
-            return launches;
+            this.setCache('upcoming_all', launches);
+            this.releaseHold();
+            return launches.slice(0, limit);
         }
 
+        this.holdFallback();
         return this.getFallbackUpcomingLaunches();
     }
 
     async getPastLaunches(limit = 100) {
-        const cacheKey = `past_${limit}`;
-        const cached = this.getCached(cacheKey);
-        if (cached) return cached;
+        const all = this.getCached('past_all');
+        if (all) return all.slice(0, limit);
+        if (this.fallbackHeld()) return this.getFallbackPastLaunches();
 
-        const url = `${DATA_SOURCES.launchLibrary.url}/launch/previous/?limit=${limit}&mode=detailed`;
+        const url = `${DATA_SOURCES.launchLibrary.url}/launch/previous/?limit=50&mode=detailed`;
         const data = await this.fetchJSON(url);
 
-        if (data && Array.isArray(data.results) && data.results.length > 0) {
+        if (data && Array.isArray(data.results)) {
             const launches = data.results.map(launch => ({
                 id: launch.id,
                 name: launch.name,
@@ -361,19 +403,21 @@ class SpaceAPI {
                 location: launch.pad?.location?.name || 'Launch Site',
                 isFallback: false
             }));
-            this.setCache(cacheKey, launches);
-            return launches;
+            this.setCache('past_all', launches);
+            this.releaseHold();
+            return launches.slice(0, limit);
         }
 
+        this.holdFallback();
         return this.getFallbackPastLaunches();
     }
 
     async getLaunchStatistics() {
         try {
-            const [upcoming, past] = await Promise.all([
-                this.getUpcomingLaunches(20),
-                this.getPastLaunches(100)
-            ]);
+            // Appels LL2 sequentiels (quota IP serre : pas de burst parallele)
+            const upcoming = await this.getUpcomingLaunches(20);
+            await new Promise(resolve => setTimeout(resolve, 1200));
+            const past = await this.getPastLaunches(100);
 
             const all = [...past];
             if (all.length >= 20) {

@@ -91,7 +91,9 @@ function renderLaunchCardSafe(launch) {
 
     const status = document.createElement('span');
     status.className = `card-badge ${statusClass}`;
-    status.textContent = launch.isFallback ? 'Archive telemetry' : 'Live sync';
+    status.textContent = launch.isFallback
+        ? 'Archive telemetry'
+        : (launch.statusName || launch.status || 'Live sync');
     header.appendChild(status);
 
     const time = document.createElement('span');
@@ -147,23 +149,23 @@ function renderLaunchCardSafe(launch) {
         }
     });
 
-    // Bookmark button
-    const isFav = Bookmarks && Bookmarks.has(launch.id);
-    const btn = document.createElement('button');
-    btn.className = 'btn btn-secondary';
-    btn.style.marginTop = '1rem';
-    btn.style.width = '100%';
-    btn.textContent = isFav ? '★ Bookmarked' : '☆ Bookmark';
-    btn.setAttribute('aria-label', isFav ? 'Remove from bookmarks' : 'Add to bookmarks');
-    btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        if (Bookmarks) {
+    // Bookmark button (module charge uniquement sur les pages launches/launch/bookmarks)
+    if (window.Bookmarks) {
+        const isFav = Bookmarks.has(launch.id);
+        const btn = document.createElement('button');
+        btn.className = 'btn btn-secondary';
+        btn.style.marginTop = '1rem';
+        btn.style.width = '100%';
+        btn.textContent = isFav ? '★ Bookmarked' : '☆ Bookmark';
+        btn.setAttribute('aria-label', isFav ? 'Remove from bookmarks' : 'Add to bookmarks');
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
             isFav ? Bookmarks.remove(launch.id) : Bookmarks.add(launch.id);
             Toast.show(isFav ? 'Removed from bookmarks' : 'Added to bookmarks');
             btn.textContent = isFav ? '☆ Bookmark' : '★ Bookmarked';
-        }
-    });
-    card.appendChild(btn);
+        });
+        card.appendChild(btn);
+    }
 
     return card;
 }
@@ -278,22 +280,19 @@ function initScrollAnimations() {
 }
 
 function updateTelemetryStatus() {
-    const statusDot = document.getElementById('telemetry-status');
-    if (!statusDot) return;
+    // Le point lumineux est #live-dot. #telemetry-status porte le texte et ne
+    // doit jamais etre stylise en pastille, sinon son texte s'affiche casse.
+    const dot = document.getElementById('live-dot');
+    if (!dot) return;
 
-    const isOnline = navigator.onLine;
-    statusDot.className = `pulse-dot ${isOnline ? 'online' : 'offline'}`;
-    statusDot.title = isOnline ? 'Live telemetry active' : 'Offline mode';
+    const setOnline = (online) => {
+        dot.className = `pulse-dot ${online ? 'online' : 'offline'}`;
+        dot.title = online ? 'Live telemetry active' : 'Offline mode';
+    };
 
-    window.addEventListener('online', () => {
-        statusDot.className = 'pulse-dot online';
-        statusDot.title = 'Live telemetry active';
-    });
-
-    window.addEventListener('offline', () => {
-        statusDot.className = 'pulse-dot offline';
-        statusDot.title = 'Offline mode';
-    });
+    setOnline(navigator.onLine);
+    window.addEventListener('online', () => setOnline(true));
+    window.addEventListener('offline', () => setOnline(false));
 }
 
 document.addEventListener('DOMContentLoaded', () => {
