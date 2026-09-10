@@ -57,6 +57,8 @@ par les pages).
 
 ## .htaccess (contenu)
 
+Le fichier inclut la redirection `301 /index.html -> /` (URL canonique unique) et le cache des polices (`font/woff2`, 1 mois).
+
 ```
 # Space Program - static multi-page site (Hostinger shared)
 <IfModule mod_expires.c>

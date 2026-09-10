@@ -1,5 +1,15 @@
 # Changelog
 
+## [v0.3.4] - 2026-09-10
+
+### Changed
+- APOD NASA charge **a la demande** (bouton « Load NASA astronomy picture ») : le service (cle de demonstration) renvoie systematiquement des 429 et polluait la console (`errors-in-console`) ; l'espace reste reserve (pas de layout shift) et l'image ne bloque plus le LCP
+- `.htaccess` de deploiement : **redirection 301 `/index.html` -> `/`** (une seule URL canonique) + cache `font/woff2` 1 mois et SVG 1 semaine
+
+### Fixed
+- `best-practices` (news) : plus d'erreur console liee a l'API NASA
+- `seo` (index) : URL unique grace a la redirection (canonical `/` respecte)
+
 ## [v0.3.3] - 2026-09-10
 
 ### Changed
