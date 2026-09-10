@@ -846,6 +846,52 @@ select {
     color: var(--text-muted);
 }
 
+/* Launches : onglet Completed groupe par lanceur (donnees statiques) */
+.launcher-list {
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    background: var(--bg-surface);
+    max-height: 420px;
+    overflow-y: auto;
+}
+
+.launcher-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.85rem;
+    border-bottom: 1px solid var(--border-subtle);
+    font-size: 0.86rem;
+}
+
+.launcher-row:last-child {
+    border-bottom: 0;
+}
+
+.launcher-row time {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    min-width: 84px;
+}
+
+.launcher-row .name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--text-secondary);
+}
+
+.launcher-note {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    text-align: right;
+    margin-top: 0.5rem;
+}
+
 /* Loading & Empty states */
 .loading {
     display: flex;

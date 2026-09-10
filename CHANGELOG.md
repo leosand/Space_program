@@ -1,5 +1,15 @@
 # Changelog
 
+## [v0.3.0] - 2026-09-10
+
+### Added
+- launches.html : onglet **Completed** groupe par **lanceur** (derniers vols connus de chaque lanceur, liste compacte defilante, compteur `N derniers · M vols connus`), alimente par un jeu de donnees statique ; repli automatique sur l'API si le fichier est absent
+- tools/collect_completed.py : collecte **hors-ligne** des derniers vols par lanceur (throttlee, reprenable, attente adaptative sur HTTP 429 LL2) ; ecrit data/completed-by-launcher.json (checkpoint apres chaque lanceur)
+- data/ : jeu de donnees versionne (100 derniers vols par lanceur)
+
+### Changed
+- docs/DEPLOYMENT.md : section « Donnees par lanceur » (rafraichissement + upload de data/)
+
 ## [v0.2.2] - 2026-09-10
 
 ### Fixed

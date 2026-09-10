@@ -67,6 +67,22 @@ ExpiresByType text/html "access plus 0 seconds"
 </IfModule>
 ```
 
+## Donnees par lanceur (onglet Completed)
+
+L'onglet Completed de `launches.html` affiche les derniers vols connus de chaque
+lanceur depuis `data/completed-by-launcher.json` (statique, aucune requete API au
+chargement — le quota LL2 interdit 100 vols/lanceur cote navigateur).
+
+Rafraichir les donnees (hors-ligne, throttled, reprenable) :
+
+```bash
+python tools/collect_completed.py --top 20 --per-launcher 100   # checkpoints
+```
+
+Puis uploader le fichier produit vers `public_html/data/completed-by-launcher.json`
+(le dossier `data/` doit exister sur le serveur). Le script reprend ou il s'est
+arrete si on le relance (les lanceurs deja complets sont ignores).
+
 ## Archive / rollback
 
 L'ancien contenu d'afroconstellation.com (SPA React + API PHP) est archive dans le
