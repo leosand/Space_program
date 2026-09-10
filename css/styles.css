@@ -893,6 +893,19 @@ select {
     color: var(--text-secondary);
 }
 
+/* Reserve de hauteur des graphiques (Chart.js dimensionne apres coup -> CLS) */
+#radar {
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    height: auto;
+}
+
+#year-chart, #provider-chart {
+    aspect-ratio: 2 / 1;
+    width: 100%;
+    height: auto;
+}
+
 .launcher-note {
     font-family: var(--font-mono);
     font-size: 0.72rem;

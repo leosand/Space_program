@@ -1,5 +1,14 @@
 # Changelog
 
+## [v0.3.3] - 2026-09-10
+
+### Changed
+- Polices **auto-hebergees** : Space Grotesk / Inter / JetBrains Mono servies depuis `fonts/` + `css/fonts.css` (sous-ensembles latin + latin-ext, 6 fichiers variables, 213 Ko) ; plus aucune requete tierce a `fonts.googleapis.com` ni preconnect externe (FCP/LCP ameliores, zero dependance reseau externe pour le texte)
+- Cache-bust `?v=6`
+
+### Fixed
+- CLS residuel des graphiques : hauteur reservee en CSS (`#radar` 1/1, `#year-chart`/`#provider-chart` 2/1) avant l'initialisation de Chart.js
+
 ## [v0.3.2] - 2026-09-10
 
 ### Fixed
