@@ -1,128 +1,128 @@
-# 🚀 Space Program — Telemetrie et analyses de lancements
+# 🚀 Space Program — Launch telemetry and analytics
 
-[![Site en ligne](https://img.shields.io/badge/Telemetrie-Active-06b6d4?style=flat-square&logo=spacex&logoColor=white)](https://leosand.github.io/Space_program/)
-[![Licence MIT](https://img.shields.io/badge/Licence-MIT-blue.svg?style=flat-square)](LICENSE)
-[![Accessibilite WCAG 2.1 AA](https://img.shields.io/badge/Accessibilite-WCAG%202.1%20AA-emerald?style=flat-square)](https://www.w3.org/WAI/WCAG21/quickref/)
-[![Donnees LL2](https://img.shields.io/badge/Donnees-Launch%20Library%202-purple?style=flat-square)](https://thespacedevs.com/llapi)
+[![Site online](https://img.shields.io/badge/Telemetry-Active-06b6d4?style=flat-square&logo=spacex&logoColor=white)](https://leosand.github.io/Space_program/)
+[![MIT License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
+[![WCAG 2.1 AA accessibility](https://img.shields.io/badge/Accessibility-WCAG%202.1%20AA-emerald?style=flat-square)](https://www.w3.org/WAI/WCAG21/quickref/)
+[![LL2 data](https://img.shields.io/badge/Data-Launch%20Library%202-purple?style=flat-square)](https://thespacedevs.com/llapi)
 
-> Plateforme open source de telemetrie spatiale : manifeste orbital, statistiques de lancements, comparaison de lanceurs et veille d'actualite spatiale fondes sur des donnees publiques.
+> Open-source space telemetry platform: orbital manifest, launch statistics, launcher comparison and space news monitoring built on public data.
 
-**Demo :** [leosand.github.io/Space_program](https://leosand.github.io/Space_program/)
+**Demo:** [leosand.github.io/Space_program](https://leosand.github.io/Space_program/)
 
-## Sommaire
+## Table of contents
 
-- [Apercu](#apercu)
-- [Fonctionnalites](#fonctionnalites)
+- [Overview](#overview)
+- [Features](#features)
 - [Architecture](#architecture)
-- [Structure du depot](#structure-du-depot)
-- [Demarrage local](#demarrage-local)
-- [Sources de donnees](#sources-de-donnees)
-- [Contribution](#contribution)
-- [Securite et confidentialite](#securite-et-confidentialite)
-- [Feuille de route](#feuille-de-route)
-- [Licence](#licence)
+- [Repository structure](#repository-structure)
+- [Local setup](#local-setup)
+- [Data sources](#data-sources)
+- [Contributing](#contributing)
+- [Security and privacy](#security-and-privacy)
+- [Roadmap](#roadmap)
+- [License](#license)
 
-## Apercu
+## Overview
 
-Space Program est un site statique deploye sur GitHub Pages. Il rend accessibles des donnees spatiales ouvertes sans compte utilisateur, sans pisteur publicitaire et sans base de donnees applicative.
+Space Program is a static site deployed on GitHub Pages. It makes open space data accessible with no user account, no advertising tracker and no application database.
 
-Le projet s'adresse aux passionnes d'espace, aux journalistes, aux chercheurs et aux developpeurs qui souhaitent suivre les missions orbitales, analyser les cadences de lancement ou reutiliser une architecture frontend legere.
+The project is aimed at space enthusiasts, journalists, researchers and developers who want to follow orbital missions, analyze launch cadence or reuse a lightweight frontend architecture.
 
-## Fonctionnalites
+## Features
 
 | Page | URL | Role |
 |---|---|---|
-| Tableau de bord | `/` | Indicateurs de telemetrie et apercu des missions |
-| Lancements | `/launches.html` | Manifeste, recherche, filtres par fournisseur et export CSV |
-| Detail d'un lancement | `/launch.html?id=<id>` | Informations de mission, compte a rebours, partage et favori |
-| Statistiques | `/statistics.html` | Cadence annuelle et distribution par fournisseur |
-| Comparaison | `/compare.html` | Radar et tableau de specifications de lanceurs |
-| Actualites | `/news.html` | Flux SNAPI, RSS publics et NASA APOD |
-| Favoris | `/bookmarks.html` | Lancements sauvegardes localement dans le navigateur |
-| Contact | `/contact.html` | Attribution, contact et signalement de problemes |
+| Dashboard | `/` | Telemetry indicators and mission overview |
+| Launches | `/launches.html` | Manifest, search, provider filters and CSV export |
+| Launch detail | `/launch.html?id=<id>` | Mission information, countdown, sharing and bookmark |
+| Statistics | `/statistics.html` | Annual cadence and distribution by provider |
+| Comparison | `/compare.html` | Radar and specification table for launchers |
+| News | `/news.html` | SNAPI feed, public RSS and NASA APOD |
+| Bookmarks | `/bookmarks.html` | Launches saved locally in the browser |
+| Contact | `/contact.html` | Attribution, contact and issue reporting |
 
-### Interactions utilisateur
+### User interactions
 
-- **Favoris locaux :** les identifiants de lancement sont conserves dans `localStorage`.
-- **Export CSV :** les donnees du manifeste actif peuvent etre exportees pour analyse.
-- **Notifications navigateur :** l'autorisation est toujours demandee par action explicite.
-- **Partage :** les pages de lancement fournissent un lien direct reproductible.
-- **Accessibilite :** navigation au clavier, libelles ARIA, contraste renforce et prise en charge de `prefers-reduced-motion`.
+- **Local bookmarks:** launch identifiers are kept in `localStorage`.
+- **CSV export:** the data of the active manifest can be exported for analysis.
+- **Browser notifications:** permission is always requested through an explicit action.
+- **Sharing:** launch pages provide a reproducible direct link.
+- **Accessibility:** keyboard navigation, ARIA labels, enhanced contrast and `prefers-reduced-motion` support.
 
 ## Architecture
 
 ### Stack
 
-| Couche | Technologie |
+| Layer | Technology |
 |---|---|
-| Interface | HTML5 semantique, CSS3 et JavaScript ES2021 sans framework |
-| Visualisation | Chart.js 4.4.1 charge depuis CDN |
-| Donnees | Launch Library 2, Spaceflight News API v4, NASA APOD et flux RSS publics |
-| Hebergement | GitHub Pages |
-| Automatisation | GitHub Actions, HTMLHint et ESLint |
+| Interface | Semantic HTML5, CSS3 and ES2021 JavaScript without a framework |
+| Visualization | Chart.js 4.4.1 loaded from CDN |
+| Data | Launch Library 2, Spaceflight News API v4, NASA APOD and public RSS feeds |
+| Hosting | GitHub Pages |
+| Automation | GitHub Actions, HTMLHint and ESLint |
 
-### Flux de donnees
+### Data flow
 
 ```text
-Navigateur
-  ├─ Pages HTML (tableau de bord, manifeste, actualites, comparaison)
-  ├─ js/api.js : appels HTTP, cache memoire de 5 minutes, delai maximal de 8 secondes
-  ├─ js/app.js : rendu DOM securise et interactions partagees
-  └─ APIs publiques
-       ├─ Launch Library 2 : lancements a venir et passes
-       ├─ Spaceflight News API : articles spatiaux
-       ├─ NASA APOD : image astronomique du jour
-       └─ RSS publics : NASA, ESA et medias spatiaux
+Browser
+  ├─ HTML pages (dashboard, manifest, news, comparison)
+  ├─ js/api.js: HTTP calls, 5-minute in-memory cache, 8-second timeout
+  ├─ js/app.js: safe DOM rendering and shared interactions
+  └─ Public APIs
+       ├─ Launch Library 2: upcoming and past launches
+       ├─ Spaceflight News API: space articles
+       ├─ NASA APOD: astronomy picture of the day
+       └─ Public RSS: NASA, ESA and space media
 
-En cas d'echec reseau, les pages de lancements utilisent des donnees d'archive expressement identifiees.
+On network failure, launch pages fall back to archive data that is explicitly labelled.
 ```
 
-### Principes de conception
+### Design principles
 
-1. **Securite d'abord :** donnees externes rendues avec `document.createElement` et `textContent`; validation des liens `http` et `https`.
-2. **Resilience :** cache memoire, delais d'expiration et jeux de donnees de secours pour les vues de lancement.
-3. **Performance :** site statique, images en chargement differe et dependances limitees.
-4. **Accessibilite :** HTML semantique, etats ARIA, navigation au clavier et reduction de mouvement.
-5. **Confidentialite :** aucun compte, cookie marketing ou outil d'analytique tiers.
+1. **Security first:** external data rendered with `document.createElement` and `textContent`; `http` and `https` link validation.
+2. **Resilience:** in-memory cache, timeouts and fallback datasets for the launch views.
+3. **Performance:** static site, lazy-loaded images and limited dependencies.
+4. **Accessibility:** semantic HTML, ARIA states, keyboard navigation and reduced motion.
+5. **Privacy:** no account, no marketing cookie and no third-party analytics tool.
 
-## Structure du depot
+## Repository structure
 
 ```text
 Space_program/
-├── index.html              # Tableau de bord
-├── launches.html           # Manifeste orbital : sections par provider, filtres et export CSV
-├── launch.html             # Vue detaillee d'une mission
-├── statistics.html         # Indicateurs et graphiques
-├── compare.html            # Comparateur de lanceurs
-├── news.html               # Veille spatiale et APOD
-├── bookmarks.html          # Favoris locaux
-├── contact.html            # Attribution et contact
-├── privacy.html            # Politique de confidentialite
-├── terms.html              # Conditions d'utilisation
+├── index.html              # Dashboard
+├── launches.html           # Orbital manifest: sections by provider, filters and CSV export
+├── launch.html             # Detailed mission view
+├── statistics.html         # Indicators and charts
+├── compare.html            # Launcher comparator
+├── news.html               # Space monitoring and APOD
+├── bookmarks.html          # Local bookmarks
+├── contact.html            # Attribution and contact
+├── privacy.html            # Privacy policy
+├── terms.html              # Terms of use
 ├── css/
-│   └── styles.css          # Design system et styles responsives
+│   └── styles.css          # Design system and responsive styles
 ├── js/
-│   ├── api.js              # Sources, cache, appels reseau et donnees de secours
-│   ├── app.js              # Renderers DOM, menu et etat de telemetrie
-│   ├── bookmarks.js        # Persistance des favoris dans localStorage
-│   ├── export.js           # Generation CSV cote client
-│   ├── notifications.js    # Notifications navigateur
-│   └── toast.js            # Messages non bloquants
+│   ├── api.js              # Sources, cache, network calls and fallback data
+│   ├── app.js              # DOM renderers, menu and telemetry state
+│   ├── bookmarks.js        # Bookmark persistence in localStorage
+│   ├── export.js           # Client-side CSV generation
+│   ├── notifications.js    # Browser notifications
+│   └── toast.js            # Non-blocking messages
 ├── docs/
-│   └── DEPLOYMENT.md      # Deploiement FTP afroconstellation.com (cache, V&V)
-├── .github/workflows/ci.yml # Verifications CI
+│   └── DEPLOYMENT.md      # FTP deployment to afroconstellation.com (cache, verification)
+├── .github/workflows/ci.yml # CI checks
 ├── CONTRIBUTING.md
 ├── SECURITY.md
 ├── CHANGELOG.md
 └── LICENSE
 ```
 
-## Demarrage local
+## Local setup
 
-### Prerequis
+### Prerequisites
 
-- Un navigateur recent : Chrome 90+, Firefox 88+ ou Safari 14+
-- Python 3 ou Node.js (facultatif, recommande pour un serveur local)
+- A recent browser: Chrome 90+, Firefox 88+ or Safari 14+
+- Python 3 or Node.js (optional, recommended for a local server)
 
 ### Installation
 
@@ -130,89 +130,89 @@ Space_program/
 git clone https://github.com/leosand/Space_program.git
 cd Space_program
 
-# Avec Python
+# With Python
 python3 -m http.server 8080
 
-# Ou avec Node.js
+# Or with Node.js
 npx serve .
 ```
 
-Ouvrez ensuite [http://localhost:8080](http://localhost:8080).
+Then open [http://localhost:8080](http://localhost:8080).
 
-### Verifications locales
+### Local checks
 
 ```bash
-# Verification HTML
+# HTML check
 npx htmlhint *.html
 
-# Verification JavaScript (configuration temporaire CI)
+# JavaScript check (temporary CI configuration)
 npx eslint js/*.js --no-eslintrc --env browser,es2021 --rule 'no-undef: off'
 ```
 
-## Sources de donnees
+## Data sources
 
 | Source | Usage | Documentation |
 |---|---|---|
-| Launch Library 2 | Lancements a venir et passes | [TheSpaceDevs LL2](https://thespacedevs.com/llapi) |
-| Spaceflight News API v4 | Articles et actualites spatiales | [SNAPI](https://spaceflightnewsapi.net/) |
-| NASA APOD | Image astronomique du jour | [NASA APIs](https://api.nasa.gov/) |
-| Flux RSS publics | Complement de veille | NASA, ESA et medias spatiaux |
+| Launch Library 2 | Upcoming and past launches | [TheSpaceDevs LL2](https://thespacedevs.com/llapi) |
+| Spaceflight News API v4 | Space articles and news | [SNAPI](https://spaceflightnewsapi.net/) |
+| NASA APOD | Astronomy picture of the day | [NASA APIs](https://api.nasa.gov/) |
+| Public RSS feeds | Monitoring supplement | NASA, ESA and space media |
 
-Les APIs sont appelees directement depuis le navigateur. Leur disponibilite, leurs limites de debit et leur politique CORS peuvent donc influencer le rendu. Le site indique les donnees de secours lorsqu'elles sont utilisees.
+The APIs are called directly from the browser. Their availability, rate limits and CORS policy can therefore affect rendering. The site indicates when fallback data is used.
 
-## Contribution
+## Contributing
 
-Les contributions sont les bienvenues. Consultez [CONTRIBUTING.md](CONTRIBUTING.md) pour le processus detaille.
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for the detailed process.
 
-### Regles essentielles
+### Key rules
 
-1. Creez une branche descriptive : `feat/`, `fix/` ou `docs/`.
-2. Ne transmettez jamais de secret, cle d'API privee ou donnee personnelle dans le depot.
-3. N'introduisez pas de rendu de contenu externe avec `innerHTML`.
-4. Verifiez la navigation clavier, le rendu mobile et les etats d'erreur avant une pull request.
-5. Executez les verifications HTML et JavaScript indiquees ci-dessus.
+1. Create a descriptive branch: `feat/`, `fix/` or `docs/`.
+2. Never commit a secret, private API key or personal data to the repository.
+3. Do not introduce rendering of external content with `innerHTML`.
+4. Check keyboard navigation, mobile rendering and error states before a pull request.
+5. Run the HTML and JavaScript checks listed above.
 
-## Securite et confidentialite
+## Security and privacy
 
-- Les donnees de tiers sont rendues avec des API DOM sures lorsque le contenu est externe.
-- Les liens issus des flux sont limites aux schemas `http` et `https`.
-- Les favoris sont stockes localement dans le navigateur et ne sont jamais envoyes au projet.
-- Le site ne comporte aucun outil publicitaire, cookie de suivi ou compte utilisateur.
+- Third-party data is rendered with safe DOM APIs when the content is external.
+- Links from feeds are restricted to the `http` and `https` schemes.
+- Bookmarks are stored locally in the browser and are never sent to the project.
+- The site has no advertising tool, tracking cookie or user account.
 
-Pour signaler une vulnerabilite, consultez [SECURITY.md](SECURITY.md). Pour le detail des pratiques de donnees, consultez [privacy.html](privacy.html).
+To report a vulnerability, see [SECURITY.md](SECURITY.md). For details of data practices, see [privacy.html](privacy.html).
 
-## Deploiement
+## Deployment
 
-Le site est deploye sur https://afroconstellation.com (Hostinger, FTP). La
-procedure complete (jeu de fichiers, .htaccess, cache-bust `?v=`, V&V post-
-deploiement, notes sur le quota de l'API Launch Library 2) est documentee dans
-[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md). Les metas canonical / OpenGraph /
-JSON-LD ciblent ce domaine de production.
+The site is deployed at https://afroconstellation.com (Hostinger, FTP). The
+complete procedure (file set, .htaccess, `?v=` cache-bust, post-deployment
+verification, notes on the Launch Library 2 API quota) is documented in
+[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md). The canonical / OpenGraph /
+JSON-LD metas target this production domain.
 
-## Feuille de route
+## Roadmap
 
-### En cours ou prioritaire
+### In progress or prioritized
 
-- [ ] Mettre en place des tests automatises de rendu et des tests E2E Playwright
-- [ ] Ajouter Lighthouse CI et des budgets de performance
-- [ ] Ajouter un manifest PWA et une strategie hors ligne documentee
-- [ ] Ajouter les traductions FR-CA et EN avec contenu localise
+- [ ] Set up automated rendering tests and Playwright E2E tests
+- [ ] Add Lighthouse CI and performance budgets
+- [ ] Add a PWA manifest and a documented offline strategy
+- [ ] Add FR-CA and EN translations with localized content
 
-### Evolutions envisagees
+### Planned evolutions
 
-- [ ] Passer a TypeScript strict et ajouter une validation de schema pour les reponses API
-- [ ] Migrer vers Next.js avec rendu statique ou ISR si les besoins de contenu l'exigent
-- [ ] Ajouter un proxy API cote serveur uniquement si les limites CORS ou les cles de service le justifient
+- [ ] Move to strict TypeScript and add schema validation for API responses
+- [ ] Migrate to Next.js with static rendering or ISR if content needs require it
+- [ ] Add a server-side API proxy only if CORS limits or service keys justify it
 
-## Licence
+## License
 
-Ce projet est distribue sous [licence MIT](LICENSE).
+This project is distributed under the [MIT license](LICENSE).
 
 ## Contact
 
-- Mainteneur : [Leonel Sandjong](https://github.com/leosand)
-- Problemes et demandes : [GitHub Issues](https://github.com/leosand/Space_program/issues)
+- Maintainer: [Leonel Sandjong](https://github.com/leosand)
+- Issues and requests: [GitHub Issues](https://github.com/leosand/Space_program/issues)
 
 ---
 
-Construit avec des donnees ouvertes pour rendre l'exploration spatiale plus lisible. 🚀
+Built with open data to make space exploration more legible. 🚀

@@ -1,5 +1,10 @@
 # Changelog
 
+## [v0.3.1] - 2026-09-10
+
+### Changed
+- README.md : traduction integrale en anglais de la page de garde du depot (structure, tableaux et liens inchanges)
+
 ## [v0.3.0] - 2026-09-10
 
 ### Added
