@@ -1,5 +1,15 @@
 # Changelog
 
+## [v0.3.2] - 2026-09-10
+
+### Fixed
+- Layout shift (CLS) sur news : squelettes de cartes statiques (12) occupant la place pendant le chargement + section APOD a espace reserve (ratio 16/9) -> plus de saut quand les donnees arrivent
+- Chart.js auto-heberge (`js/vendor/chart.umd.min.js`) au lieu du CDN jsDelivr : supprime une ressource render-blocking tierce (compare, statistics)
+- Erreur console APOD passee en `warn` + section masquee proprement en cas d'echec
+
+### Changed
+- Cache-bust `?v=5` (assets modifies)
+
 ## [v0.3.1] - 2026-09-10
 
 ### Changed
