@@ -15,7 +15,7 @@ Depuis la racine du depot `master` :
 
 - les 10 pages : `index.html`, `launches.html`, `launch.html`, `statistics.html`,
   `compare.html`, `news.html`, `bookmarks.html`, `contact.html`, `privacy.html`, `terms.html`
-- `css/styles.css`
+- `css/styles.css`, `favicon.svg`
 - `js/api.js`, `js/app.js`, `js/bookmarks.js`, `js/export.js`, `js/notifications.js`, `js/toast.js`
 
 Exclus : `.github/`, `.harness/`, `*.md`, `LICENSE`, `js/charts.js` (non reference

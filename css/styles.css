@@ -4,8 +4,6 @@
    WCAG 2.1 AA compliant (contrast ratios >= 4.5:1, text-muted >= 5.2:1)
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
-
 :root {
     color-scheme: dark;
     --bg-base: #06070a;
@@ -205,6 +203,10 @@ body::before {
 
 .menu-toggle {
     display: none;
+    min-width: 44px;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
     flex-direction: column;
     gap: 5px;
     background: transparent;
@@ -521,6 +523,7 @@ body::before {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    min-height: 44px;
     gap: 0.5rem;
     padding: 0.65rem 1.4rem;
     font-family: var(--font-body);
@@ -586,6 +589,7 @@ body::before {
 }
 
 select {
+    min-height: 44px;
     background: var(--bg-elevated);
     color: var(--text-primary);
     border: 1px solid var(--border-subtle);
@@ -615,6 +619,9 @@ select {
 }
 
 .vehicle-btn {
+    display: inline-flex;
+    align-items: center;
+    min-height: 38px;
     padding: 0.45rem 0.9rem;
     background: var(--bg-elevated);
     border: 1px solid var(--border-subtle);
@@ -777,7 +784,7 @@ select {
     max-width: 38ch;
 }
 
-.footer h4 {
+.footer h2, .footer h4 {
     font-family: var(--font-mono);
     font-size: 0.75rem;
     text-transform: uppercase;
@@ -794,6 +801,8 @@ select {
 }
 
 .footer-links a {
+    display: inline-block;
+    padding: 0.35rem 0;
     color: var(--text-muted);
     text-decoration: none;
     font-size: 0.86rem;

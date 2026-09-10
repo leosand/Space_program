@@ -24,12 +24,15 @@
     <meta property="og:image" content="https://afroconstellation.com/og-image.png">
 
     <link rel="icon" type="image/svg+xml"
-        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+        href="favicon.svg">
     <meta name="theme-color" content="#06070a">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="css/styles.css?v=3" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="css/styles.css?v=4" rel="stylesheet">
 </head>
 
 <body>
@@ -38,7 +41,7 @@
     <!-- Header -->
     <header class="header" role="banner">
         <div class="container">
-            <a href="index.html" class="logo" aria-label="Space Program Home">
+            <a href="/" class="logo">
                 <span>🚀 SPACE PROGRAM</span>
                 <span class="logo-telemetry">DISPATCHES</span>
             </a>
@@ -49,7 +52,7 @@
             </button>
             <nav role="navigation" aria-label="Main navigation">
                 <ul class="nav-menu">
-                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="/" class="nav-link">Home</a></li>
                     <li><a href="launches.html" class="nav-link">Launches</a></li>
                     <li><a href="statistics.html" class="nav-link">Statistics</a></li>
                     <li><a href="compare.html" class="nav-link">Compare</a></li>
@@ -107,13 +110,13 @@
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-brand">
-                    <a href="index.html" class="logo">🚀 SPACE PROGRAM</a>
+                    <a href="/" class="logo">🚀 SPACE PROGRAM</a>
                     <p>Syndicated space dispatches and exploration intelligence.</p>
                 </div>
                 <div>
-                    <h4>Navigation</h4>
+                    <h2>Navigation</h2>
                     <ul class="footer-links">
-                        <li><a href="index.html">Home</a></li>
+                        <li><a href="/">Home</a></li>
                         <li><a href="launches.html">Launches</a></li>
                         <li><a href="statistics.html">Statistics</a></li>
                         <li><a href="compare.html">Compare</a></li>
@@ -121,14 +124,14 @@
                     </ul>
                 </div>
                 <div>
-                    <h4>Sources</h4>
+                    <h2>Sources</h2>
                     <ul class="footer-links">
                         <li><a href="https://spaceflightnewsapi.net" target="_blank" rel="noopener noreferrer">SNAPI v4</a></li>
                         <li><a href="https://api.nasa.gov" target="_blank" rel="noopener noreferrer">NASA APOD API</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4>Project</h4>
+                    <h2>Project</h2>
                     <ul class="footer-links">
                         <li><a href="privacy.html">Privacy</a></li>
                         <li><a href="terms.html">Terms</a></li>
@@ -142,8 +145,8 @@
         </div>
     </footer>
 
-    <script src="js/api.js?v=3"></script>
-    <script src="js/app.js?v=3"></script>
+    <script src="js/api.js?v=4"></script>
+    <script src="js/app.js?v=4"></script>
     <script>
         let allNews = [];
         let displayedCount = 0;
@@ -250,9 +253,12 @@
                         const img = document.createElement('img');
                         img.src = safeUrl;
                         img.alt = apod.title || 'NASA APOD';
-                        img.loading = 'lazy';
+                        img.loading = 'eager';
+                        img.fetchPriority = 'high';
+                        img.width = 1024;
+                        img.height = 576;
                         img.style.width = '100%';
-                        img.style.maxHeight = '360px';
+                        img.style.aspectRatio = '16 / 9';
                         img.style.objectFit = 'cover';
                         img.style.borderRadius = 'var(--radius-md)';
                         img.style.border = '1px solid var(--border-subtle)';

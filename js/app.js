@@ -24,6 +24,9 @@ function renderNewsCardSafe(article) {
             img.src = safeImgUrl;
             img.alt = article.title || 'News image';
             img.loading = 'lazy';
+            img.decoding = 'async';
+            img.width = 640;
+            img.height = 360;
             img.style.width = '100%';
             img.style.height = '160px';
             img.style.objectFit = 'cover';
