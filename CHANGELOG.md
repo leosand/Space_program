@@ -1,5 +1,15 @@
 # Changelog
 
+## [v0.2.2] - 2026-09-10
+
+### Fixed
+- launches.html : le loader « Syncing orbital telemetry… » restait affiche au-dessus des sections (le conteneur n'etait pas vide a chaque rendu)
+- Cache navigateur/CDN : les assets etaient encore servis en ancienne version (max-age long pose avant l'introduction du cache-bust) -> bump global `?v=3` et HTML non cacheable cote serveur
+
+### Changed
+- compare.html : selects de vehicules en pleine largeur (champs de formulaire propres, theme sombre)
+- docs/DEPLOYMENT.md : .htaccess HTML `access plus 0 seconds` + note purge hcdn
+
 ## [v0.2.1] - 2026-09-09
 
 ### Fixed

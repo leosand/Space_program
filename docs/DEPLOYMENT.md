@@ -30,7 +30,11 @@ par les pages).
    parametre `?v=` sur les references dans les pages HTML (ex. `styles.css?v=3`,
    `js/api.js?v=3`). Sans cela, navigateurs et CDN Hostinger (hcdn) peuvent servir
    l'ancienne version jusqu'a expiration du cache css/js (10 min).
-4. **Metas** : canonical / OpenGraph / JSON-LD pointent vers `https://afroconstellation.com`
+4. **Cache CDN (hcdn)** : apres un upload, l'edge hcdn peut encore servir
+   l'ancienne copie pendant quelques minutes (en-tete `Age`). Purger en
+   re-uploadant le fichier ou en attendant l'expiration ; le HTML est servi
+   `max-age=0` pour limiter ce cas.
+5. **Metas** : canonical / OpenGraph / JSON-LD pointent vers `https://afroconstellation.com`
    (decision du 2026-09-09, integree au source). `og-image.png` est absent du depot :
    ajouter ce fichier a la racine pour un partage social correct.
 5. **V&V post-deploiement** :
@@ -59,7 +63,7 @@ par les pages).
 ExpiresActive On
 ExpiresByType text/css "access plus 10 minutes"
 ExpiresByType application/javascript "access plus 10 minutes"
-ExpiresByType text/html "access plus 5 minutes"
+ExpiresByType text/html "access plus 0 seconds"
 </IfModule>
 ```
 

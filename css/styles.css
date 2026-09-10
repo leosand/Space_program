@@ -595,6 +595,18 @@ select {
     font-size: 0.86rem;
 }
 
+.vehicle-compare-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.vehicle-compare-field select {
+    width: 100%;
+}
+
 /* Vehicle Selector Pills */
 .vehicle-selector {
     display: flex;
