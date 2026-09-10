@@ -42,7 +42,7 @@
 ### Changed
 - Metas canonical / OpenGraph / JSON-LD des pages vers https://afroconstellation.com (domaine de production)
 - Logo : retrait de la mention de version `v0.1` (chip `LIVE`)
-- Contact : `contact@example.com` retire de privacy.html / terms.html, remplace par le lien vers le depot
+- Contact : retrait d'une adresse de contact tierce de privacy.html / terms.html, remplacee par le lien vers le depot
 - Style des `select` natifs (theme sombre via `color-scheme: dark`)
 - `.htaccess` de deploiement : cache css/js 10 min, html 5 min (non versionne, voir docs/DEPLOYMENT.md)
 

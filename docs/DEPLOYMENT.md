@@ -1,13 +1,13 @@
 # Deployment — afroconstellation.com (Hostinger, FTP)
 
 Procedure utilisee le 2026-09-09 pour deployer ce depot sur le domaine
-`afroconstellation.com` (hebergement partage Hostinger, compte `<COMPTE_HOSTINGER>`).
+`afroconstellation.com` (hebergement partage Hostinger).
 
 ## Cible
 
 - Domaine : `https://afroconstellation.com` (statique, aucun PHP requis)
-- FTP : `<HOTE_FTP>` / user `<COMPTE_HOSTINGER>.afroconstellation.com` / racine `public_html`
-- Identifiants : `Dev-Vault/credentials/hostinger-ftp-afroconstellation.txt` (hors repo, gitignore)
+- FTP : `<HOTE_FTP>` / compte `<COMPTE_HOSTINGER>` / racine `public_html`
+- Identifiants : fichier de credentials du vault prive (hors repo, jamais committe ; regle 11 AGENTS.md)
 
 ## Jeu de fichiers deployes
 

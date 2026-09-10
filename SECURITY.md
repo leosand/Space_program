@@ -8,7 +8,7 @@ La branche `master` est la seule version actuellement prise en charge pour les c
 
 Merci de ne pas publier une vulnerabilite exploitable dans une issue publique.
 
-1. Ecrivez a [contact@example.com](mailto:contact@example.com) avec l'objet `Security: Space Program`.
+1. Utilisez le canal **GitHub Security Advisories** du depot (`Security` > `Report a vulnerability`).
 2. Decrivez le probleme, les fichiers ou pages concernes et les etapes de reproduction.
 3. Incluez un impact estime et, si possible, une proposition de correctif.
 4. Ne joignez aucun secret reel ni donnee personnelle au rapport.
