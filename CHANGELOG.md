@@ -1,5 +1,11 @@
 # Changelog
 
+## [v0.2.1] - 2026-09-09
+
+### Fixed
+- news.html : les boutons de filtres par source (SNAPI v4, NASA/JPL, ESA, SpaceX, RSS, All) repondent des l'arrivee sur la page ; les handlers etaient attaches seulement apres le chargement des flux externes (boutons inertes plusieurs secondes, jamais cables si un flux trainait)
+- news.html : garde sur le bouton « load more » absent
+
 ## [v0.2.0] - 2026-09-09
 
 ### Added

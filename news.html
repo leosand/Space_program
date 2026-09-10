@@ -150,9 +150,13 @@
         let currentFilter = 'all';
         const BATCH_SIZE = 12;
 
-        document.addEventListener('DOMContentLoaded', async () => {
-            await Promise.all([loadNews(), loadAPOD()]);
+        document.addEventListener('DOMContentLoaded', () => {
+            // Les filtres doivent repondre des l'arrivee sur la page : on cable
+            // les boutons AVANT de charger les flux (sinon ils restent inertes
+            // tant que les reseaux externes n'ont pas repondu).
             initSourceTabs();
+            loadNews();
+            loadAPOD();
         });
 
         async function loadNews() {
@@ -219,9 +223,11 @@
                 });
             });
 
-            loadMoreBtn.addEventListener('click', () => {
-                renderFilteredNews(true);
-            });
+            if (loadMoreBtn) {
+                loadMoreBtn.addEventListener('click', () => {
+                    renderFilteredNews(true);
+                });
+            }
         }
 
         async function loadAPOD() {
