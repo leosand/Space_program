@@ -69,6 +69,25 @@ ExpiresByType text/html "access plus 0 seconds"
 </IfModule>
 ```
 
+## Cache (politique)
+
+| Type | Cache | Regle |
+|---|---|---|
+| CSS / JS / polices / SVG | **1 an** | Tout changement d'asset **doit** incrementer `?v=` dans les pages (sinon les clients gardent l'ancienne version 1 an) |
+| `fonts/*.woff2` | 1 an | Noms de fichiers haches par Google (immuables) |
+| HTML | **0 s** (revalidation) | Le shell de page est toujours frais |
+| `data/*.json` | **0 s** | Les donnees statiques sont revalidees |
+
+## Fraicheur des donnees a venir (automatique)
+
+`launches.html` resynchronise **automatiquement** les vols a venir : toutes les 10 min,
+au retour sur l'onglet et au retour de connexion. L'etat est affiche sous la recherche
+(`#sync-status`) : heure de synchro, prochain rafraichissement, nombre de vols charges,
+et mention « donnees d'archive » si l'API LL2 est momentanement limitee (429).
+
+Le jeu `data/completed-by-launcher.json` (onglet Completed) est **statique** : le
+rafraichir periodiquement avec `tools/collect_completed.py` puis re-uploader.
+
 ## Donnees par lanceur (onglet Completed)
 
 L'onglet Completed de `launches.html` affiche les derniers vols connus de chaque

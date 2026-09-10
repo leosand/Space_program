@@ -1,5 +1,15 @@
 # Changelog
 
+## [v0.4.0] - 2026-09-10
+
+### Added
+- **Rafraichissement automatique des vols a venir** : resynchro toutes les 10 min (`setInterval`), au retour sur l'onglet (`visibilitychange`) et au retour en ligne (`online`) ; le refresh invalide le cache (`spaceAPI.clearCache`) et libere le garde-fou anti-429 (`releaseHold`)
+- **Ligne d'etat de synchro** sur `launches.html` (`#sync-status`, `aria-live`) : heure de derniere synchro, prochain rafraichissement, nombre de vols a venir charges, et mention explicite « donnees d'archive » si l'API est temporairement limitee
+- `SpaceAPI.clearCache(prefix)` : invalidation ciblee (memoire + localStorage)
+
+### Changed
+- **Politique de cache** : assets versionnes (`?v=N`) et polices = **1 an** ; HTML et JSON = **revalidation** (0 s). Toute evolution d'asset **doit** incrementer `?v=` (documente dans docs/DEPLOYMENT.md)
+
 ## [v0.3.4] - 2026-09-10
 
 ### Changed

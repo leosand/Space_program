@@ -906,6 +906,18 @@ select {
     height: auto;
 }
 
+.sync-status {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    margin: 0.5rem 0 1rem;
+}
+
+.sync-status.stale {
+    color: var(--status-warning);
+}
+
 .launcher-note {
     font-family: var(--font-mono);
     font-size: 0.72rem;

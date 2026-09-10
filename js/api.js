@@ -281,6 +281,19 @@ class SpaceAPI {
         try { localStorage.removeItem('spc_hold'); } catch (e) { /* ignore */ }
     }
 
+    // Invalide les caches (memoire + localStorage) dont la cle commence par
+    // le prefixe donne (ex. 'upcoming_' pour forcer une resynchro des vols a venir).
+    clearCache(prefix = '') {
+        for (const key of [...this.cache.keys()]) {
+            if (key.startsWith(prefix)) this.cache.delete(key);
+        }
+        try {
+            for (const key of Object.keys(localStorage)) {
+                if (key.startsWith('spc_' + prefix)) localStorage.removeItem(key);
+            }
+        } catch (e) { /* stockage indisponible */ }
+    }
+
     async fetchOnce(url, timeoutMs) {
         const controller = new AbortController();
         const timer = setTimeout(() => controller.abort(), timeoutMs);
