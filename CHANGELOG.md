@@ -1,5 +1,16 @@
 # Changelog
 
+## [v0.4.2] - 2026-09-10
+
+### Added
+- **Tache serveur** `server/refresh.php` (deployee en `tasks/refresh.php`) : rafraichissement des donnees par lanceur **execute sur le serveur** (PHP/cURL, throttle + attente adaptative 429), publication GitHub par API Contents, puis **archivage + suppression** des fichiers hors manifeste — dans cet ordre (le menage est annule si la publication echoue)
+- Garde d'acces par **token** (403 sinon), configuration privee `tasks/private/config.php` (+ `.htaccess` `Require all denied`), journal et archives hors web
+- Modes de controle : `status`, `dry-run`, `prune-dry`, `refresh-dry`, `refresh`, `prune`, `cron`
+- Modeles `server/private/config.example.php` et `server/private/.htaccess`
+
+### Removed
+- Automatisation cote poste de travail (tache planifiee Windows) : le rafraichissement/menage se fait desormais **cote serveur**
+
 ## [v0.4.1] - 2026-09-10
 
 ### Added

@@ -16,6 +16,7 @@ Depuis la racine du depot `master` :
 - les 10 pages : `index.html`, `launches.html`, `launch.html`, `statistics.html`,
   `compare.html`, `news.html`, `bookmarks.html`, `contact.html`, `privacy.html`, `terms.html`
 - `css/styles.css`, `css/fonts.css`, `favicon.svg`, `fonts/*.woff2` (polices auto-hebergees)
+- `tasks/refresh.php` (+ `tasks/private/manifest.json` regenere a chaque deploiement)
 - `js/api.js`, `js/app.js`, `js/bookmarks.js`, `js/export.js`, `js/notifications.js`, `js/toast.js`, `js/vendor/chart.umd.min.js` (Chart.js auto-heberge)
 
 Exclus : `.github/`, `.harness/`, `*.md`, `LICENSE`, `js/charts.js` (non reference
@@ -135,6 +136,32 @@ derniers instantanes (`--snapshot-data` gz des jeux de donnees, dedupliques par 
 clone de travail, execute le pruner puis journalise dans
 `.harness/backups/space-program-data/archive-task.log`. Option `-RefreshData` pour
 enchainer la collecte LL2 des donnees par lanceur.
+
+## Tache serveur (rafraichissement + publication + menage)
+
+Le rafraichissement et le menage tournent **sur le serveur** (PHP 8.3), pas sur un poste :
+
+- `server/refresh.php` deploye en `tasks/refresh.php`, protege par un **token** (`?token=`) ;
+  sans token -> 403. La configuration vit dans `tasks/private/config.php` (dossier
+  `.htaccess` `Require all denied`, jamais dans le depot ; modele : `server/private/config.example.php`).
+- Modes : `status` | `dry-run` | `prune-dry` | `refresh-dry` | `refresh` | `prune` | `cron`.
+- `cron` execute dans cet ordre : **1) refresh LL2** -> **2) commit GitHub** (API Contents,
+  PAT fine-grained) -> **3) archivage + suppression** des fichiers hors manifeste.
+  Si `require_github_commit` est vrai et que la publication echoue, **le menage est annule**
+  (on ne supprime jamais avant d'avoir publie).
+- Le manifeste (`tasks/private/manifest.json`) est genere depuis le depot et **uploadé a
+  chaque deploiement** : c'est lui qui definit ce qui doit rester en ligne.
+- Journal : `tasks/private/log.txt` (rotation a 512 Ko), archives : `tasks/private/archive/`.
+
+Declenchement quotidien (hPanel -> Avance -> Taches Cron), commande :
+
+```bash
+php /home/UTILISATEUR/domains/afroconstellation.com/public_html/tasks/refresh.php --cron
+```
+
+Variante sans acces hPanel : un planificateur externe (ex. GitHub Actions) appelle
+`https://afroconstellation.com/tasks/refresh.php?mode=cron&token=<secret>` une fois par jour
+(le travail reste execute sur le serveur).
 
 ## Archive / rollback
 

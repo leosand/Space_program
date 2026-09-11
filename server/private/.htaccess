@@ -1,0 +1,3 @@
+# Zone privee de la tache serveur : acces web interdit
+Require all denied
+Deny from all

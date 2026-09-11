@@ -129,6 +129,9 @@ def main():
         done = [k for k, v in state["launchers"].items() if v.get("complete")]
         print(f"reprise : {len(done)} lanceur(s) deja complets", flush=True)
 
+    prev_launchers = json.dumps(state["launchers"], sort_keys=True, ensure_ascii=False)
+    prev_generated = state.get("generated_at")
+
     print("decouverte des lanceurs (historique recent)...", flush=True)
     counts, meta = discover(args.discover_pages)
     ranked = sorted(counts.items(), key=lambda kv: -kv[1])[: args.top]
@@ -174,6 +177,14 @@ def main():
         with open(args.out, "w", encoding="utf-8") as f:
             json.dump(state, f, ensure_ascii=False, indent=1)
         print(f"+ {l['full_name']} : {len(launches)} vols collectes (sur {available}) -> checkpoint", flush=True)
+
+    # Si aucune donnee n'a change, on restaure l'horodatage precedent : le fichier
+    # reste bit-identique -> le runner ne cree pas de commit quotidien inutile.
+    if json.dumps(state["launchers"], sort_keys=True, ensure_ascii=False) == prev_launchers and prev_generated:
+        state["generated_at"] = prev_generated
+        with open(args.out, "w", encoding="utf-8") as f:
+            json.dump(state, f, ensure_ascii=False, indent=1)
+        print("donnees inchangees : horodatage conserve", flush=True)
 
     ok = sum(1 for v in state["launchers"].values() if v.get("complete"))
     print(f"termine : {ok}/{len(launchers)} lanceurs complets -> {args.out}", flush=True)
