@@ -1,2 +1,4 @@
 .harness/backups/
 .harness/agents/hooks/*.log
+__pycache__/
+*.pyc
