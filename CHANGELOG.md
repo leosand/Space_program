@@ -1,5 +1,14 @@
 # Changelog
 
+## [v0.4.1] - 2026-09-10
+
+### Added
+- `tools/prune_server.py` : **archivage + suppression automatique** du contenu obsolete du serveur (comparaison au manifeste du depot, archivage local avant suppression, `.htaccess` protege, garde-fous de volume, simulation par defaut, retention `--keep`, instantanes gzip des donnees dedupliques par hash) ; chemins fournis par `SPACE_PROGRAM_FTP_CREDS` / `SPACE_PROGRAM_ARCHIVE`
+- Automatisation hebdomadaire cote harness (`scripts/space-program-archive.ps1` + tache planifiee Windows `SpaceProgram-Content-Prune-Weekly`)
+
+### Changed
+- `docs/DEPLOYMENT.md` : section « Archivage / suppression automatique »
+
 ## [v0.4.0] - 2026-09-10
 
 ### Added

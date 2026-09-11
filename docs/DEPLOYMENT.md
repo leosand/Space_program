@@ -104,6 +104,38 @@ Puis uploader le fichier produit vers `public_html/data/completed-by-launcher.js
 (le dossier `data/` doit exister sur le serveur). Le script reprend ou il s'est
 arrete si on le relance (les lanceurs deja complets sont ignores).
 
+## Archivage / suppression automatique du contenu obsolete
+
+Le serveur ne doit contenir **que** le contenu courant du depot. `tools/prune_server.py`
+compare le contenu distant au **manifeste** (fichiers deployables calcules depuis le
+depot) et, pour tout fichier hors manifeste :
+
+1. il l'**archive localement** (copie datee, hors depot) ;
+2. il le **supprime** du serveur ;
+3. il supprime les dossiers devenus vides (jamais ceux utilises par le manifeste).
+
+Garde-fous : `.htaccess` protege, abandon si le manifeste parait incomplet
+(< 10 fichiers) ou si plus de `--max-delete` fichiers seraient supprimes,
+`--apply` obligatoire pour agir (simulation par defaut).
+
+Chemins (jamais codes en dur dans le depot) :
+
+```bash
+export SPACE_PROGRAM_FTP_CREDS=/chemin/vers/credentials-ftp.txt   # vault prive
+export SPACE_PROGRAM_ARCHIVE=/chemin/vers/archive                 # hors depot
+python tools/prune_server.py                 # simulation
+python tools/prune_server.py --apply --snapshot-data --keep 12
+```
+
+Retention : `--keep N` conserve les N derniers lots d'archives distantes et les N
+derniers instantanes (`--snapshot-data` gz des jeux de donnees, dedupliques par hash).
+
+**Automatisation** : tache planifiee Windows `SpaceProgram-Content-Prune-Weekly`
+(harness, script `scripts/space-program-archive.ps1`) — hebdomadaire, met a jour un
+clone de travail, execute le pruner puis journalise dans
+`.harness/backups/space-program-data/archive-task.log`. Option `-RefreshData` pour
+enchainer la collecte LL2 des donnees par lanceur.
+
 ## Archive / rollback
 
 L'ancien contenu d'afroconstellation.com (SPA React + API PHP) est archive dans le
