@@ -44,6 +44,7 @@ if (!is_array($cfgFile) || !isset($cfgFile['token']) || !hash_equals((string)$cf
 
 $mode    = isset($_GET['mode']) ? (string)$_GET['mode'] : 'status';
 $dry     = ($mode === 'dry-run');
+$HEAVY   = in_array($mode, ['cron', 'refresh', 'prune', 'dry-run', 'refresh-dry'], true);
 $GITHUB  = (string)($cfgFile['github_token'] ?? '');
 $REPO    = (string)($cfgFile['github_repo'] ?? '');
 $BRANCH  = (string)($cfgFile['github_branch'] ?? 'master');
@@ -258,7 +259,135 @@ function githubCommit(array &$linesOut, string $token, string $repo, string $bra
     return false;
 }
 
+// ---------------------------------------------------------- travail lourd
+function runHeavy(string $mode, array &$lines, string $priv, string $dataFile, string $site,
+                  int $keep, array $cfg, string $GITHUB, string $REPO, string $BRANCH, bool $REQ_COMMIT): int {
+    switch ($mode) {
+        case 'refresh':
+            return refresh($lines, $priv, $dataFile, $site, (int)($cfg['ll2_limit'] ?? 50), false);
+        case 'prune':
+            return prune($lines, $priv, $site, false, $keep);
+        case 'dry-run':
+            refresh($lines, $priv, $dataFile, $site, (int)($cfg['ll2_limit'] ?? 50), true);
+            return prune($lines, $priv, $site, true, $keep);
+        case 'refresh-dry':
+            return refresh($lines, $priv, $dataFile, $site, (int)($cfg['ll2_limit'] ?? 50), true);
+        case 'cron':
+            emit($lines, '--- 1/3 refresh ---');
+            $r = refresh($lines, $priv, $dataFile, $site, (int)($cfg['ll2_limit'] ?? 50), false);
+            $committed = false;
+            if ($GITHUB && $REPO) {
+                emit($lines, '--- 2/3 commit GitHub ---');
+                $content = is_file($dataFile) ? (string)file_get_contents($dataFile) : '';
+                $committed = $content !== '' && githubCommit($lines, $GITHUB, $REPO, $BRANCH, 'data/completed-by-launcher.json', $content);
+            } else {
+                emit($lines, '--- 2/3 commit GitHub: ignore (pas de token) ---');
+            }
+            if ($REQ_COMMIT && !$committed) {
+                emit($lines, '--- 3/3 prune ANNEELE: commit GitHub requis avant suppression ---');
+                return $r === 0 ? 1 : $r;
+            }
+            emit($lines, '--- 3/3 prune ---');
+            $p = prune($lines, $priv, $site, false, $keep);
+            emit($lines, 'FIN OK');
+            return max($r, $p);
+    }
+    return 2;
+}
+
+// ------------------------------------------- etapes bornees (compatibles HTTP)
+// Le mode "cron" est bloque par l'edge Hostinger (307, PHP non execute) : les gros
+// travaux passent donc par des appels COURTS et REPRENABLES — reset -> step xN -> finish.
+function statePath(string $priv): string { return $priv . '/state.json'; }
+function loadState(string $priv): array {
+    $f = statePath($priv);
+    return is_file($f) ? (json_decode((string)file_get_contents($f), true) ?: []) : [];
+}
+function saveState(string $priv, array $st): void {
+    @file_put_contents(statePath($priv), json_encode($st, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+}
+function step(array &$lines, string $priv, string $dataFile, string $site, int $per): array {
+    $st = loadState($priv);
+    $state = is_file($dataFile) ? (json_decode((string)file_get_contents($dataFile), true) ?: []) : [];
+    if (empty($st['pending']) || empty($st['cycle'])) {
+        emit($lines, 'STEP NONE : cycle non initialise (appeler ?mode=reset)');
+        return [0, 'NONE'];
+    }
+    $name = (string)$st['pending'][0];
+    $info = $state['launchers'][$name] ?? null;
+    if (!$info || empty($info['id'])) {
+        array_shift($st['pending']); $st['done'][] = $name; saveState($priv, $st);
+        emit($lines, "STEP OK {$name} (ignore: donnees absentes)");
+        return [0, 'OK'];
+    }
+    $limit = min(50, $per);                       // une seule page LL2 par appel
+    $offset = (int)($st['offset'][$name] ?? 0);
+    $url = "https://ll.thespacedevs.com/2.2.0/launch/previous/?rocket__configuration__id={$info['id']}"
+         . "&limit={$limit}&offset={$offset}&mode=detailed";
+    [$code, $body] = httpGet($url);
+    if ($code === 429) {
+        $wait = 120;
+        if ($body !== null && preg_match('/available in (\d+) seconds/', $body, $m)) { $wait = min((int)$m[1] + 5, 900); }
+        $st['wait'] = time() + $wait; saveState($priv, $st);
+        emit($lines, "STEP WAIT {$wait} ({$name})");
+        return [0, 'WAIT'];
+    }
+    if ($code !== 200 || $body === null) {
+        emit($lines, "STEP RETRY (HTTP {$code} sur {$name})");
+        return [0, 'RETRY'];
+    }
+    $data = json_decode($body, true) ?: [];
+    $rows = $data['results'] ?? [];
+    $existing = $offset === 0 ? [] : ($info['launches'] ?? []);
+    foreach ($rows as $l) {
+        $rk = $l['rocket']['configuration'] ?? [];
+        $existing[] = [
+            'id' => $l['id'] ?? null, 'name' => $l['name'] ?? null, 'net' => $l['net'] ?? null,
+            'status' => $l['status']['abbrev'] ?? null, 'statusName' => $l['status']['name'] ?? null,
+            'provider' => $l['launch_service_provider']['name'] ?? null,
+            'rocket' => $rk['full_name'] ?? ($rk['name'] ?? null),
+            'mission' => $l['mission']['name'] ?? null, 'missionType' => $l['mission']['type'] ?? null,
+            'pad' => $l['pad']['name'] ?? null, 'location' => $l['pad']['location']['name'] ?? null,
+        ];
+    }
+    $available = $data['count'] ?? ($info['available'] ?? null);
+    $state['launchers'][$name]['launches'] = array_slice($existing, 0, $per);
+    $state['launchers'][$name]['collected'] = count($state['launchers'][$name]['launches']);
+    $state['launchers'][$name]['available'] = $available;
+    $done = count($rows) < $limit || count($existing) >= $per || ($available !== null && $offset + count($rows) >= $available);
+    $state['launchers'][$name]['complete'] = $done;
+    if ($done) {
+        array_shift($st['pending']); $st['done'][] = $name; unset($st['offset'][$name]);
+        $state['generated_at'] = gmdate('c');
+    } else {
+        $st['offset'][$name] = $offset + count($rows);
+    }
+    $tmp = $dataFile . '.tmp';
+    @file_put_contents($tmp, json_encode($state, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+    @rename($tmp, $dataFile);
+    saveState($priv, $st);
+    $left = count($st['pending']);
+    emit($lines, "STEP OK {$name} collected={$state['launchers'][$name]['collected']}/{$available} remaining={$left}");
+    return [0, $left === 0 ? 'DONE' : 'OK'];
+}
+
 // --------------------------------------------------------------------- main
+// Modes lourds : on repond immediatement puis on poursuit en arriere-plan.
+// (Les attentes de quota LL2 depassent les limites nginx/hcdn d'un mutualise.)
+if ($HEAVY && !$dry && function_exists('fastcgi_finish_request')) {
+    ignore_user_abort(true);
+    set_time_limit(0);
+    logLine($PRIV, "START async mode={$mode}");
+    http_response_code(202);
+    echo "started (mode={$mode}) - suivi via ?mode=last
+";
+    flush();
+    fastcgi_finish_request();
+    $status = runHeavy($mode, $lines, $PRIV, $DATA, $SITE, $KEEP, $cfgFile, $GITHUB, $REPO, $BRANCH, $REQ_COMMIT);
+    logLine($PRIV, "END async mode={$mode} status={$status}");
+    exit($status);
+}
+
 $status = 0;
 emit($lines, 'Space Program task | mode=' . $mode . ' | ' . gmdate('c'));
 switch ($mode) {
@@ -320,6 +449,51 @@ switch ($mode) {
         $status = max($r, $p);
         break;
 
+    case 'diag':
+        emit($lines, 'sapi=' . php_sapi_name() . ' | fastcgi_finish_request=' . (function_exists('fastcgi_finish_request') ? 'oui' : 'non'));
+        emit($lines, 'max_execution_time=' . ini_get('max_execution_time') . ' | memory_limit=' . ini_get('memory_limit'));
+        emit($lines, 'curl=' . (function_exists('curl_init') ? 'oui' : 'non') . ' | exec=' . (function_exists('exec') ? 'oui' : 'non'));
+        break;
+
+    case 'reset':
+        $state = is_file($DATA) ? (json_decode((string)file_get_contents($DATA), true) ?: []) : [];
+        $names = array_keys($state['launchers'] ?? []);
+        saveState($PRIV, ['cycle' => gmdate('c'), 'pending' => $names, 'done' => [], 'offset' => []]);
+        emit($lines, 'RESET OK ' . count($names) . ' lanceur(s) a rafraichir');
+        break;
+
+    case 'step':
+        [$rc, $tag] = step($lines, $PRIV, $DATA, $SITE, (int)($cfgFile['ll2_limit'] ?? 50) * 2);
+        break;
+
+    case 'finish':
+        $content = is_file($DATA) ? (string)file_get_contents($DATA) : '';
+        $committed = false;
+        if ($GITHUB && $REPO && $content !== '') {
+            $committed = githubCommit($lines, $GITHUB, $REPO, $BRANCH, 'data/completed-by-launcher.json', $content);
+        }
+        if ($REQ_COMMIT && !$committed) {
+            emit($lines, 'FINISH BLOQUE: commit GitHub requis avant suppression (token absent ou echec)');
+            $status = 1;
+            break;
+        }
+        $status = prune($lines, $PRIV, $SITE, false, $KEEP);
+        emit($lines, 'FINISH OK');
+        break;
+
+    case 'last':  // etat du dernier run (machine-lisible) pour les planificateurs externes
+        $log = $PRIV . '/log.txt';
+        $tail = is_file($log) ? implode('', array_slice(file($log), -40)) : '';
+        $marker = str_contains($tail, 'FIN OK') ? 'FIN OK'
+            : (str_contains($tail, 'ERREUR') ? 'ERREUR'
+            : (str_contains($tail, 'ANNEELE') ? 'BLOQUE'
+            : (str_contains($tail, 'START async') ? 'EN COURS' : 'INCONNU')));
+        $mtime = is_file($log) ? date('c', (int)filemtime($log)) : 'n/a';
+        emit($lines, "LAST: {$marker} | log {$mtime}");
+        foreach (array_slice(explode("
+", trim($tail)), -8) as $l) { emit($lines, '  ' . $l); }
+        break;
+
     default:
         http_response_code(400);
         emit($lines, 'mode inconnu');
@@ -328,4 +502,7 @@ switch ($mode) {
 
 foreach ($lines as $l) { logLine($PRIV, $l); }
 echo implode("\n", $lines) . "\n";
+// Code HTTP aligne sur le code de sortie : une tache en echec est visible
+// cote appelant (GitHub Actions, monitoring) au lieu d'un 200 trompeur.
+http_response_code($status === 0 ? 200 : 500);
 exit($status);

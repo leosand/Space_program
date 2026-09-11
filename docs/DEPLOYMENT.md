@@ -153,15 +153,28 @@ Le rafraichissement et le menage tournent **sur le serveur** (PHP 8.3), pas sur 
   chaque deploiement** : c'est lui qui definit ce qui doit rester en ligne.
 - Journal : `tasks/private/log.txt` (rotation a 512 Ko), archives : `tasks/private/archive/`.
 
-Declenchement quotidien (hPanel -> Avance -> Taches Cron), commande :
+### Declenchement quotidien — etapes bornees (obligatoire en HTTP)
 
-```bash
-php /home/UTILISATEUR/domains/afroconstellation.com/public_html/tasks/refresh.php --cron
-```
+**Constat verifie (2026-09-11)** : l'hebergement est servi par **LiteSpeed** derriere un
+edge qui **bloque les requetes HTTP longues** (reponse `307` sans que le PHP soit execute ;
+`fastcgi_finish_request` et `exec` indisponibles : `?mode=diag`). Un mode monolithique
+(`cron`) ne peut donc pas tourner en HTTP.
 
-Variante sans acces hPanel : un planificateur externe (ex. GitHub Actions) appelle
-`https://afroconstellation.com/tasks/refresh.php?mode=cron&token=<secret>` une fois par jour
-(le travail reste execute sur le serveur).
+La tache est decoupee en **appels courts et reprenables** :
+
+| Mode | Role | Duree |
+|---|---|---|
+| `reset` | (re)initialise le cycle (liste des lanceurs) | instantane |
+| `step` | rafraichit **1 page LL2** (1 lanceur) ; etat sauvegarde dans `state.json` | ~1 s (ou `STEP WAIT n` sur 429) |
+| `finish` | **commit GitHub** puis **archivage + suppression** des fichiers hors manifeste | quelques secondes |
+
+Un orchestrateur (GitHub Actions `.github/workflows/daily-server-task.yml`, ou tout autre
+planificateur) enchaine : `reset` -> `step` en boucle (en respectant `STEP WAIT`) -> `finish`.
+Le **travail s'execute sur le serveur** ; l'orchestrateur ne fait que l'appeler.
+
+Le mode `cron` (monolithique) reste disponible **uniquement en CLI** — p.ex. tache cron
+hPanel : `php /home/<UTILISATEUR>/domains/afroconstellation.com/public_html/tasks/refresh.php --cron`
+(la CLI n'a pas la limite HTTP).
 
 ## Archive / rollback
 

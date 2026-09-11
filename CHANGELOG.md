@@ -1,5 +1,12 @@
 # Changelog
 
+## [v0.4.3] - 2026-09-11
+
+### Changed
+- **Tache serveur en etapes bornees** : l'edge Hostinger (LiteSpeed) bloque les requetes HTTP longues (`307`, PHP non execute ; `fastcgi_finish_request` et `exec` indisponibles). Nouveaux modes **`reset` / `step` / `finish`** : `step` traite **une page LL2 par appel** (etat persistant `state.json`), `finish` publie sur GitHub **puis** archive/supprime. Mode monolithique `cron` conserve pour un usage **CLI** (hPanel).
+- Mode `diag` (sapi, extensions, limites) et `mode=last` (etat lisible par un planificateur)
+- Orchestration **GitHub Actions** (`.github/workflows/daily-server-task.yml`, quotidien 08:23 UTC) : `reset` -> `step` xN -> `finish`, avec attente des quotas LL2 ; avertissement explicite (au lieu d'un echec) tant qu'aucun PAT GitHub n'est configure cote serveur
+
 ## [v0.4.2] - 2026-09-10
 
 ### Added

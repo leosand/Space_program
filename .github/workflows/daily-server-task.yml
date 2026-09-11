@@ -1,0 +1,76 @@
+name: Daily server maintenance
+
+# Le rafraichissement et le menage sont executes SUR LE SERVEUR (tasks/refresh.php).
+# L'hebergement mutualise bloque les requetes HTTP longues (307 sans execution du PHP),
+# donc l'Action pilote des appels COURTS et REPRENABLES :
+#   reset -> step xN (1 page LL2 par appel) -> finish (commit GitHub -> archivage+suppression)
+# Le serveur fait le travail ; l'Action ne fait que l'orchestrer.
+
+'on':
+  schedule:
+    - cron: '23 8 * * *'   # 08:23 UTC (~04:23 heure de l'Est) — minute non ronde
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Que faire ?"
+        required: true
+        default: full
+        type: choice
+        options: [full, status, reset]
+
+jobs:
+  server-task:
+    name: Tache serveur (etapes bornees)
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    env:
+      URL: https://afroconstellation.com/tasks/refresh.php
+      TOK: ${{ secrets.SPACE_PROGRAM_TASK_TOKEN }}
+    steps:
+      - name: Etat de la tache serveur
+        run: |
+          curl -sS --fail-with-body --max-time 60 "$URL?mode=status&token=$TOK"
+
+      - name: Cycle complet (reset -> steps -> finish)
+        if: ${{ github.event_name == 'schedule' || inputs.mode == 'full' }}
+        run: |
+          set -euo pipefail
+          call() { curl -sS --max-time 120 "$URL?mode=$1&token=$TOK"; }
+
+          echo "::group::reset"
+          call reset
+          echo "::endgroup::"
+
+          waits=0
+          for i in $(seq 1 400); do
+            out="$(call step)"
+            echo "[$i] $out"
+            if grep -q "STEP NONE" <<<"$out"; then
+              echo "cycle deja termine"; break
+            fi
+            if grep -q "STEP WAIT" <<<"$out"; then
+              s=$(grep -oE 'STEP WAIT [0-9]+' <<<"$out" | grep -oE '[0-9]+' || echo 120)
+              [ "$s" -gt 300 ] && s=300
+              waits=$((waits+1)); echo "quota LL2 : attente ${s}s"
+              sleep "$s"; continue
+            fi
+            if grep -q "STEP RETRY" <<<"$out"; then sleep 20; continue; fi
+            if grep -qE 'remaining=0' <<<"$out"; then break; fi
+            sleep 2
+          done
+
+          echo "::group::finish (commit GitHub puis menage)"
+          fin="$(call finish || true)"
+          echo "$fin"
+          echo "::endgroup::"
+          if grep -q "FINISH BLOQUE" <<<"$fin"; then
+            echo "::warning::Ménage en attente : aucun PAT GitHub configuré cote serveur (require_github_commit=true). Les donnees ont ete rafraichies et publiees des que le token sera present."
+          elif grep -q "FINISH OK" <<<"$fin"; then
+            echo "cycle termine : donnees publiees puis contenu obsolete archive+supprime"
+          else
+            echo "::error::finish n'a pas abouti"; exit 1
+          fi
+
+      - name: Reset du cycle (manuel)
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.mode == 'reset' }}
+        run: curl -sS --fail-with-body --max-time 60 "$URL?mode=reset&token=$TOK"
