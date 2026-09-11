@@ -1,5 +1,11 @@
 # Changelog
 
+## [v0.4.4] - 2026-09-11
+
+### Fixed
+- **Reponses dynamiques plus jamais mises en cache** : `tasks/.htaccess` (`ExpiresActive Off` + `Cache-Control: no-store`), en-tete `no-store` dans le script, et **rotation du token** (les URLs deja mises en cache 1 an par l'edge deviennent inutilisables)
+- **Mode CLI** (`php tasks/refresh.php --cron|--refresh|--prune|--status|--dry-run`) avec `set_time_limit(0)` : le declenchement fiable est le **cron hPanel**, l'edge interceptant les appels HTTP depuis un datacenter (challenge anti-bot `hcdn-cgi/jschallenge`, HTTP 403) — planification GitHub Actions desactivee et documentee
+
 ## [v0.4.3] - 2026-09-11
 
 ### Changed

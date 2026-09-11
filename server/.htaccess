@@ -1,0 +1,9 @@
+# Zone technique (tache serveur) : AUCUN cache, aucune expiration par defaut.
+# Les reponses PHP de /tasks/ sont dynamiques : l'edge ne doit jamais les mettre en cache.
+<IfModule mod_expires.c>
+ExpiresActive Off
+</IfModule>
+<IfModule mod_headers.c>
+Header set Cache-Control "no-store, max-age=0"
+Header set Pragma "no-cache"
+</IfModule>

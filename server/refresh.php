@@ -34,15 +34,33 @@ $SITE = dirname(__DIR__);
 $DATA = $SITE . '/data/completed-by-launcher.json';
 
 header('Content-Type: text/plain; charset=utf-8');
+header('Cache-Control: no-store, max-age=0');   // l'edge ne doit jamais cacher la reponse
 
 $cfgFile = is_file($CFG) ? require $CFG : [];
-$token   = isset($_GET['token']) ? (string)$_GET['token'] : '';
+$token   = (PHP_SAPI === 'cli') ? (string)($cfgFile['token'] ?? '') : (isset($_GET['token']) ? (string)$_GET['token'] : '');
 if (!is_array($cfgFile) || !isset($cfgFile['token']) || !hash_equals((string)$cfgFile['token'], $token)) {
-    http_response_code(403);
+    if (PHP_SAPI !== 'cli') { http_response_code(403); }
     exit("forbidden\n");
 }
 
 $mode    = isset($_GET['mode']) ? (string)$_GET['mode'] : 'status';
+$isCli   = (PHP_SAPI === 'cli');
+$cliMode = 'cron';
+if ($isCli) {   // cron hPanel : execution locale, sans HTTP donc sans challenge anti-bot
+    foreach ($argv ?? [] as $arg) {
+        if (str_starts_with($arg, '--mode=')) { $cliMode = substr($arg, 7); }
+        elseif ($arg === '--cron') { $cliMode = 'cron'; }
+        elseif ($arg === '--refresh') { $cliMode = 'refresh'; }
+        elseif ($arg === '--prune') { $cliMode = 'prune'; }
+        elseif ($arg === '--dry-run') { $cliMode = 'dry-run'; }
+        elseif ($arg === '--status') { $cliMode = 'status'; }
+    }
+}
+if ($isCli) {
+    $mode = $cliMode;
+    set_time_limit(0);      // CLI : pas de limite (le refresh avec attentes de quota peut durer)
+    ignore_user_abort(true);
+}
 $dry     = ($mode === 'dry-run');
 $HEAVY   = in_array($mode, ['cron', 'refresh', 'prune', 'dry-run', 'refresh-dry'], true);
 $GITHUB  = (string)($cfgFile['github_token'] ?? '');

@@ -172,9 +172,29 @@ Un orchestrateur (GitHub Actions `.github/workflows/daily-server-task.yml`, ou t
 planificateur) enchaine : `reset` -> `step` en boucle (en respectant `STEP WAIT`) -> `finish`.
 Le **travail s'execute sur le serveur** ; l'orchestrateur ne fait que l'appeler.
 
-Le mode `cron` (monolithique) reste disponible **uniquement en CLI** — p.ex. tache cron
-hPanel : `php /home/<UTILISATEUR>/domains/afroconstellation.com/public_html/tasks/refresh.php --cron`
-(la CLI n'a pas la limite HTTP).
+### Declenchement recommande : cron hPanel (CLI)
+
+**Deux blocages verifies en HTTP (2026-09-11)** :
+1. un appel depuis un datacenter (runner GitHub Actions) est intercepte par un
+   **challenge anti-bot** de l'edge (`hcdn-cgi/jschallenge`, HTTP 403) — le PHP n'est
+   meme pas execute ;
+2. l'edge **cachait les reponses dynamiques** (mon `ExpiresDefault 1 year` s'appliquait
+   au `text/plain` du PHP) : corrige par `tasks/.htaccess` (`ExpiresActive Off` +
+   `Cache-Control: no-store`) et par la rotation du token.
+
+Le declenchement fiable est donc une **tache cron hPanel (CLI)** — aucun HTTP, aucun
+challenge, aucune limite de duree :
+
+```bash
+php /home/u767033805/domains/afroconstellation.com/public_html/tasks/refresh.php --cron
+```
+
+(hPanel -> Avance -> Taches Cron, quotidien, minute non ronde ; ajuster le chemin si
+hPanel en affiche un autre.)
+
+Le mode `cron` enchaine : refresh LL2 -> commit GitHub -> archivage + suppression.
+Les modes `reset`/`step`/`finish` restent disponibles pour un declenchement HTTP borne
+(si un jour le challenge est leve, p.ex. via une exception hPanel).
 
 ## Archive / rollback
 
